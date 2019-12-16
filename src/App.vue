@@ -1,32 +1,49 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <router-view />
   </div>
 </template>
 
+<script></script>
+
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+@import url('https://fonts.googleapis.com/css?family=Monoton|Cookie|Courgette|Roboto|Satisfy&display=swap');
+
+html {
+  -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Courgette', cursive, sans-serif;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(54, 63, 72, 1);
+  /* box-sizing: border-box;
+  width: 500px;
+  padding: 0 20px 20px;
+  margin: 0 auto; */
+}
+
+h1 {
+  font-family: 'Satisfy', cursive, sans-serif;
+  margin: 0;
+  /* line-height: 140%; */
+}
+
+h2 {
   text-align: center;
-  color: #2c3e50;
+  margin-right: 3vw;
+  margin-left: 3vw;
+  margin-bottom: 0;
+  /* font-size: 2vw; */
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+p {
+  font-size: 1, 5vw;
 }
 </style>
