@@ -29,7 +29,37 @@ export default {
       lastName: null,
       email: null
     }
+  },
+  methods: {
+    onSubmit() {
+      let firstName = this.firstName,
+        lastName = this.lastName,
+        email = this.email
+      if (validateEmail(email)) {
+        if (
+          process.env.VUE_APP_MAIL === email &&
+          process.env.VUE_APP_PASS === firstName
+        ) {
+          console.log(process.env.VUE_APP_SECRET)
+          alert("You're July")
+          //ASK PASSWORD
+        }
+        console.log(lastName)
+        //SEND DATA
+        this.firstName = null
+        this.lastName = null
+        this.email = null
+      }
+    }
   }
+}
+
+const validateEmail = email => {
+  if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    return true
+  }
+  alert("S'il vous plaît, entrez une adresse e-mail valide")
+  return false
 }
 </script>
 

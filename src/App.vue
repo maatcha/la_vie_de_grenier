@@ -32,7 +32,6 @@ body {
 h1 {
   font-family: 'Satisfy', cursive, sans-serif;
   margin: 0;
-  /* line-height: 140%; */
 }
 
 h2 {
@@ -40,10 +39,5 @@ h2 {
   margin-right: 3vw;
   margin-left: 3vw;
   margin-bottom: 0;
-  /* font-size: 2vw; */
-}
-
-p {
-  font-size: 1, 5vw;
 }
 </style>
