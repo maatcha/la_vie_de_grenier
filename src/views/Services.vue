@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper">
+    <NavbarInPages />
     <div class="container">
       <h1 class="title">Présentation de nos services</h1>
       <div class="depot-vente">
@@ -33,7 +34,12 @@
 </template>
 
 <script>
-export default {}
+import NavbarInPages from '@/components/NavbarInPages.vue'
+export default {
+  components: {
+    NavbarInPages
+  }
+}
 </script>
 
 <style scoped>
@@ -44,7 +50,8 @@ h1 {
 
 .title {
   padding-top: 3vw;
-  margin: 3vw;
+  margin-top: 0;
+  margin-bottom: 3vw;
   text-align: center;
 }
 
@@ -74,8 +81,7 @@ h1 {
 
 .wrapper {
   background-color: rgba(54, 63, 72, 1);
-  padding-top: 7.5vw;
+  padding-top: 2vw;
   padding-bottom: 7.5vw;
-  /* margin: 3vw; */
 }
 </style>

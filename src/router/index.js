@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import News from '../views/News.vue'
 import Services from '../views/Services.vue'
 import NotFoundComponent from '../views/NotFoundComponent.vue'
+import Admin from '../views/Admin.vue'
 
 Vue.use(VueRouter)
 
@@ -22,6 +23,11 @@ const routes = [
     path: '/services',
     name: 'services',
     component: Services
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: Admin
   },
   {
     path: '*',
