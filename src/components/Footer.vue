@@ -1,18 +1,20 @@
 <template>
   <div id="footer">
-    <div class="adress">
-      <p>Retrouvez-nous :</p>
-      <p>23, rue Riquet</p>
-      <p>31000 TOULOUSE</p>
-      <p>Tél : 06.43.85.97.22</p>
-    </div>
-    <div class="message">
-      <p>! Restez informé du</p>
-      <p>changement prochain</p>
-      <p>de local en remplissant</p>
-      <p>ce formulaire !</p>
-    </div>
-    <ContactForm></ContactForm>
+    <slot>
+      <div class="adress">
+        <p>Retrouvez-nous :</p>
+        <p>23, rue Riquet</p>
+        <p>31000 TOULOUSE</p>
+        <p>Tél : 06.43.85.97.22</p>
+      </div>
+      <div class="message">
+        <p>! Restez informé du</p>
+        <p>changement prochain</p>
+        <p>de local en remplissant</p>
+        <p>ce formulaire !</p>
+      </div>
+      <ContactForm></ContactForm>
+    </slot>
   </div>
 </template>
 

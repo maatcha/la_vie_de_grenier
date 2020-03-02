@@ -1,6 +1,12 @@
 <template>
-  <div class="wrapper">
-    <NavbarInPages />
+  <div>
+    <Navbar>
+      <div slot="left" class="navbar-links-group">
+        <router-link class="navbar-link" :to="{ name: 'home' }"
+          >Retour à l'accueil</router-link
+        >
+      </div>
+    </Navbar>
     <div class="container">
       <h1 class="title">Présentation de nos services</h1>
       <div class="depot-vente">
@@ -30,14 +36,17 @@
         </p>
       </div>
     </div>
+    <Footer />
   </div>
 </template>
 
 <script>
-import NavbarInPages from '@/components/NavbarInPages.vue'
+import Navbar from '@/components/Navbar.vue'
+import Footer from '@/components/Footer.vue'
 export default {
   components: {
-    NavbarInPages
+    Navbar,
+    Footer
   }
 }
 </script>
@@ -64,7 +73,7 @@ h1 {
 
 .debarras {
   /* margin-top: 0px; */
-  margin: 3vw 3vw;
+  margin: 0vw 3vw;
   padding-top: 0vw;
   padding-bottom: 3vw;
   text-align: center;
@@ -81,7 +90,6 @@ h1 {
 
 .wrapper {
   background-color: rgba(54, 63, 72, 1);
-  padding-top: 2vw;
   padding-bottom: 7.5vw;
 }
 </style>
