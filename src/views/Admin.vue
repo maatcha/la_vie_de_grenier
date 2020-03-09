@@ -2,7 +2,7 @@
   <div>
     <Navbar>
       <p slot="left">Bonjour Julie !!!</p>
-      <p slot="right">Log out</p>
+      <button @click="logout" slot="right">Log out</button>
     </Navbar>
     <div class="container">
       <p>This is the Admin page</p>
@@ -14,12 +14,26 @@
 </template>
 
 <script>
+import * as fb from '@/firebaseConfig.js'
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
 export default {
   components: {
     Navbar,
     Footer
+  },
+  methods: {
+    logout() {
+      fb.auth
+        .signOut()
+        .then(() => {
+          this.$store.dispatch('clearData')
+          this.$router.push('/')
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
   }
 }
 </script>

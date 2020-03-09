@@ -41,7 +41,7 @@ export default {
 }
 
 .message {
-  font-size: 1vw;
+  font-size: 2vw;
   /* flex-grow: 1 1 auto; */
 }
 
