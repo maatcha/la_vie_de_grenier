@@ -1,8 +1,15 @@
 <template>
   <div>
     <Navbar>
-      <p slot="left">Bonjour Julie !!!</p>
-      <button @click="logout" slot="right">Log out</button>
+      <p slot="left">Bonjour {{ userProfile.name }} !!!</p>
+      <button v-if="currentUser" @click="logout" slot="right">Log out</button>
+      <router-link
+        v-else
+        slot="right"
+        class="navbar-link"
+        :to="{ name: 'home' }"
+        >Retour à l'accueil</router-link
+      >
     </Navbar>
     <div class="container">
       <p>This is the Admin page</p>
@@ -17,10 +24,25 @@
 import * as fb from '@/firebaseConfig.js'
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
+import { mapState } from 'vuex'
 export default {
   components: {
     Navbar,
     Footer
+  },
+  created() {
+    window.addEventListener('beforeunload', e => {
+      console.log(e)
+      fb.auth
+        .signOut()
+        .then(() => {
+          this.$store.dispatch('clearData')
+          this.$router.push('/')
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    })
   },
   methods: {
     logout() {
@@ -33,6 +55,28 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    }
+  },
+  computed: {
+    ...mapState(['currentUser', 'userProfile'])
+  },
+  updated() {
+    if (!this.currentUser) {
+      this.$router.push('/')
+    }
+  },
+  beforeRouteLeave(routeTo, routeFrom, next) {
+    if (this.currentUser) {
+      const answer = window.confirm(
+        "Hmmm...tu n'aurais pas oublié de te déconnecter, par hasard ?"
+      )
+      if (answer) {
+        next(false)
+      } else {
+        next(false)
+      }
+    } else {
+      next()
     }
   }
 }

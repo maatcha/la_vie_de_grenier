@@ -42,11 +42,15 @@
 <script>
 import Footer from '@/components/Footer.vue'
 import Navbar from '@/components/Navbar.vue'
+import firebase from 'firebase/app'
 
 export default {
   components: {
     Footer,
     Navbar
+  },
+  created() {
+    console.log(firebase.auth().currentUser)
   }
 }
 </script>

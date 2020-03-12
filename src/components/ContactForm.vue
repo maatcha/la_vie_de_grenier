@@ -1,7 +1,7 @@
 <template>
   <div>
     <form class="contact-form" @submit.prevent="onSubmit">
-      <p v-if="email === adminMail">
+      <p v-if="validateAdminEmail(email)">
         <label for="password">Mot de passe:</label>
         <input id="password" size="10" v-model="password" />
       </p>
@@ -24,7 +24,11 @@
       </p>
 
       <p>
-        <button v-if="email === adminMail" class="btn-mine" @click="login">
+        <button
+          v-if="validateAdminEmail(email)"
+          class="btn-mine"
+          @click="login"
+        >
           Me connecter
         </button>
         <input
@@ -90,11 +94,11 @@ export default {
           this.performingRequest = false
           this.errorMsg = err.message
         })
-    }
-  },
-  computed: {
-    adminMail() {
-      return process.env.VUE_APP_MAIL
+    },
+    validateAdminEmail(email) {
+      if (email === process.env.VUE_APP_MAIL) {
+        return true
+      }
     }
   }
 }
@@ -185,10 +189,18 @@ const validateEmail = email => {
 }
 
 .loading {
+  font-weight: bold;
+  position: fixed;
+  bottom: 0;
+  right: 10px;
   color: red;
 }
 
 .error-msg {
+  font-weight: bold;
+  position: fixed;
+  bottom: 0;
+  right: 10px;
   color: red;
 }
 /* .contact-form>input {
