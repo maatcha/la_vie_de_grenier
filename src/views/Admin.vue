@@ -25,36 +25,34 @@ import * as fb from '@/firebaseConfig.js'
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
 import { mapState } from 'vuex'
+import store from '@/store/index'
+import router from '@/router/index'
+
+function signOutAndClearUserData() {
+  fb.auth
+    .signOut()
+    .then(() => {
+      store.dispatch('clearData')
+      router.push('/')
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
+
 export default {
   components: {
     Navbar,
     Footer
   },
   created() {
-    window.addEventListener('beforeunload', e => {
-      console.log(e)
-      fb.auth
-        .signOut()
-        .then(() => {
-          this.$store.dispatch('clearData')
-          this.$router.push('/')
-        })
-        .catch(err => {
-          console.log(err)
-        })
+    window.addEventListener('beforeunload', () => {
+      signOutAndClearUserData()
     })
   },
   methods: {
     logout() {
-      fb.auth
-        .signOut()
-        .then(() => {
-          this.$store.dispatch('clearData')
-          this.$router.push('/')
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      signOutAndClearUserData()
     }
   },
   computed: {
