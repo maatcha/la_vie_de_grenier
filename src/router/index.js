@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import firebase from 'firebase/app'
+import NProgress from 'nprogress'
 
 import Home from '../views/Home.vue'
 import News from '../views/News.vue'
@@ -47,6 +48,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  NProgress.start()
   if (to.matched[0].meta) {
     const requireAuth = to.matched[0].meta.requireAuth
     const currentUser = firebase.auth().currentUser
@@ -60,6 +62,10 @@ router.beforeEach((to, from, next) => {
       next()
     }
   }
+})
+
+router.afterEach(() => {
+  NProgress.done()
 })
 
 export default router

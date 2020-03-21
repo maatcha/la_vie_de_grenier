@@ -40,11 +40,6 @@
       </p>
     </form>
     <transition name="fade">
-      <div v-if="performingRequest" class="loading">
-        <p>Loading...</p>
-      </div>
-    </transition>
-    <transition name="fade">
       <div v-if="errorMsg !== ''" class="error-msg">
         <p>{{ errorMsg }}</p>
       </div>
@@ -54,6 +49,7 @@
 
 <script>
 import * as fb from '@/firebaseConfig.js'
+import NProgress from 'nprogress'
 export default {
   data() {
     return {
@@ -61,7 +57,6 @@ export default {
       lastName: null,
       email: null,
       password: null,
-      performingRequest: false,
       errorMsg: null
     }
   },
@@ -80,19 +75,23 @@ export default {
       }
     },
     login() {
-      this.performingRequest = true
       fb.auth
         .signInWithEmailAndPassword(this.email, this.password)
         .then(userData => {
+          NProgress.start()
           this.$store.dispatch('defineCurrentUser', userData.user)
           this.$store.dispatch('fetchUserProfile')
-          this.performingRequest = false
           this.$router.push('/admin')
         })
-        .catch(err => {
-          console.log(err)
-          this.performingRequest = false
-          this.errorMsg = err.message
+        .catch(error => {
+          NProgress.done()
+          const notification = {
+            type: 'error',
+            message:
+              `Il y a eu un problème durant l'authentification de l'administrateur : ` +
+              error.message
+          }
+          this.$store.dispatch('notification/add', notification)
         })
     },
     validateAdminEmail(email) {
@@ -186,14 +185,6 @@ const validateEmail = email => {
 
 .btn-mine:hover {
   opacity: 1;
-}
-
-.loading {
-  font-weight: bold;
-  position: fixed;
-  bottom: 0;
-  right: 10px;
-  color: red;
 }
 
 .error-msg {

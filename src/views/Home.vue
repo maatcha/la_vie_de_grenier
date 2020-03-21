@@ -1,5 +1,6 @@
 <template>
   <div>
+    <NotificationContainer />
     <Navbar />
     <div class="container">
       <div class="title">
@@ -42,12 +43,14 @@
 <script>
 import Footer from '@/components/Footer.vue'
 import Navbar from '@/components/Navbar.vue'
+import NotificationContainer from '@/components/NotificationContainer.vue'
 import firebase from 'firebase/app'
 
 export default {
   components: {
     Footer,
-    Navbar
+    Navbar,
+    NotificationContainer
   },
   created() {
     console.log(firebase.auth().currentUser)
