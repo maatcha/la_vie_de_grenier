@@ -37,6 +37,7 @@ const routes = [
   },
   {
     path: '*',
+    name: 'notFoundComponent',
     component: NotFoundComponent
   }
 ]
@@ -56,7 +57,6 @@ router.beforeEach((to, from, next) => {
     if (requireAuth && !currentUser) {
       next('/')
     } else if (requireAuth && currentUser) {
-      console.log('logged in')
       next()
     } else {
       next()
