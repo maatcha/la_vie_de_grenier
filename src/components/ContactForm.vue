@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="contact-form" @submit.prevent="onSubmit">
+    <form class="contact-form" @submit.prevent>
       <p v-if="validateAdminEmail(email)">
         <label for="password">Mot de passe:</label>
         <input id="password" size="10" v-model="password" />
@@ -31,12 +31,9 @@
         >
           Me connecter
         </button>
-        <input
-          v-else
-          class="btn-twitter"
-          type="submit"
-          value="Rester informé(e)"
-        />
+        <button v-else class="btn-twitter" @click="saveCustomerEmail">
+          Rester informé(e)
+        </button>
       </p>
     </form>
     <transition name="fade">
@@ -61,17 +58,35 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
+    saveCustomerEmail() {
       let firstName = this.firstName,
         lastName = this.lastName,
         email = this.email
       if (validateEmail(email)) {
-        //SEND DATA
-        console.log(firstName, lastName, email)
-        //SEND DATA
-        this.firstName = null
-        this.lastName = null
-        this.email = null
+        fb.customerCollection
+          .add({
+            createdOn: new Date(),
+            firstName: firstName,
+            lastName: lastName,
+            email: email
+          })
+          .then(() => {
+            // disabledButton =true
+            this.firstName = null
+            this.lastName = null
+            this.email = null
+            // set
+          })
+          .catch(error => {
+            NProgress.done()
+            const notification = {
+              type: 'error',
+              message:
+                `Il y a eu un problème durant l'enregistrement de vos données : ` +
+                error.message
+            }
+            this.$store.dispatch('notification/add', notification)
+          })
       }
     },
     login() {

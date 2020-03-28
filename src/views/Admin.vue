@@ -12,7 +12,46 @@
       >
     </Navbar>
     <div class="container">
-      <p>This is the Admin page</p>
+      <transition name="fade">
+        <p
+          class="clickableText"
+          v-if="!displayCustomerList"
+          @click="toggleCustomerList"
+        >
+          Afficher la liste des prospects
+        </p>
+
+        <div v-if="displayCustomerList">
+          <p
+            class="clickableText"
+            v-if="displayCustomerList"
+            @click="toggleCustomerList"
+          >
+            Cacher la liste des prospects
+          </p>
+          <ul>
+            <li class="customerList">
+              <p>Souscription</p>
+              <p>E-mail</p>
+              <p>Prénom</p>
+              <p>Nom</p>
+            </li>
+          </ul>
+          <hr />
+          <ul v-for="(customer, index) in customerList" :key="index">
+            <li class="customerList">
+              <p>{{ customer.createdOn | dateFromNow }}</p>
+              <p>{{ customer.email }}</p>
+              <p v-if="customer.firstName">
+                {{ customer.firstName }}
+              </p>
+              <p v-if="customer.lastName">
+                {{ customer.lastName }}
+              </p>
+            </li>
+          </ul>
+        </div>
+      </transition>
     </div>
     <Footer>
       <p>Que ta journée soit belle 33</p>
@@ -25,8 +64,8 @@ import * as fb from '@/firebaseConfig.js'
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
 import { mapState } from 'vuex'
-import store from '@/store/index'
 import router from '@/router/index'
+import store from '@/store/index'
 
 function signOutAndClearUserData() {
   fb.auth
@@ -35,8 +74,13 @@ function signOutAndClearUserData() {
       store.dispatch('clearData')
       router.push('/')
     })
-    .catch(err => {
-      console.log(err)
+    .catch(error => {
+      const notification = {
+        type: 'error',
+        message:
+          'Il y a eu un problème pendant la déconnexion : ' + error.message
+      }
+      store.dispatch('notification/add', notification)
     })
 }
 
@@ -44,6 +88,11 @@ export default {
   components: {
     Navbar,
     Footer
+  },
+  data() {
+    return {
+      displayCustomerList: false
+    }
   },
   created() {
     window.addEventListener('beforeunload', () => {
@@ -53,10 +102,13 @@ export default {
   methods: {
     logout() {
       signOutAndClearUserData()
+    },
+    toggleCustomerList() {
+      this.displayCustomerList = !this.displayCustomerList
     }
   },
   computed: {
-    ...mapState(['currentUser', 'userProfile'])
+    ...mapState(['currentUser', 'userProfile', 'customerList'])
   },
   updated() {
     if (!this.currentUser) {
@@ -81,8 +133,15 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  font-family: 'Courgette', cursive, sans-serif;
+.customerList {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.customerList > p {
+  margin: 0;
+  padding: 0;
 }
 
 .container {
@@ -90,5 +149,24 @@ h1 {
   box-shadow: 0px 2px 10px rgba(226, 231, 235, 0.7);
   margin-left: 12vw;
   margin-right: 12vw;
+}
+
+.clickableText:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  color: red;
+}
+
+h1 {
+  font-family: 'Courgette', cursive, sans-serif;
+}
+
+ul {
+  margin: 0;
+  padding: 0 1em;
+}
+
+p {
+  padding-left: 1em;
 }
 </style>

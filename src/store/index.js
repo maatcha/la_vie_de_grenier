@@ -11,7 +11,8 @@ export default new Vuex.Store({
   },
   state: {
     currentUser: null,
-    userProfile: {}
+    userProfile: {},
+    customerList: []
   },
   mutations: {
     SET_CURRENT_USER(state, currentUser) {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     },
     SET_USER_PROFILE(state, userProfile) {
       state.userProfile = userProfile
+    },
+    SET_CUSTOMER_LIST(state, customerArray) {
+      state.customerList = customerArray
     }
   },
   actions: {
@@ -46,6 +50,9 @@ export default new Vuex.Store({
     clearData({ commit }) {
       commit('SET_CURRENT_USER', null)
       commit('SET_USER_PROFILE', {})
+    },
+    updateCustomerEmails({ commit }, customerArray) {
+      commit('SET_CUSTOMER_LIST', customerArray)
     }
   }
 })

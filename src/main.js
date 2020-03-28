@@ -4,15 +4,29 @@ import router from './router'
 import store from './store'
 import 'nprogress/nprogress.css'
 import * as fb from './firebaseConfig.js'
-// import dotenv from 'dotenv'
+import formatDate from './filters/formatDate'
 
-// dotenv.config()
+Vue.filter('dateFromNow', formatDate)
 
 Vue.config.productionTip = false
 
 fb.auth.onAuthStateChanged(user => {
   if (user) {
-    console.log(user)
+    if (store.state.userProfile) {
+      fb.customerCollection
+        .orderBy('createdOn', 'desc')
+        .onSnapshot(querySnapshot => {
+          let customerArray = []
+
+          querySnapshot.forEach(customer => {
+            let email = customer.data()
+            email.id = customer.id
+            customerArray.push(email)
+          })
+
+          store.dispatch('updateCustomerEmails', customerArray)
+        })
+    }
   }
 
   new Vue({
