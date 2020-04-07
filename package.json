@@ -12,6 +12,7 @@
     "core-js": "^3.4.8",
     "dotenv": "^8.2.0",
     "firebase": "^7.9.2",
+    "jszip": "^3.3.0",
     "minimist": "^1.2.2",
     "moment": "^2.24.0",
     "node-sass": "^4.13.0",

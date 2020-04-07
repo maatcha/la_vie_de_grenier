@@ -8,6 +8,7 @@ import News from '../views/News.vue'
 import Services from '../views/Services.vue'
 import Admin from '../views/Admin.vue'
 import NotFoundComponent from '../views/NotFoundComponent.vue'
+import Test from '../views/Test.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/news',
     name: 'news',
     component: News
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: Test
   },
   {
     path: '/services',

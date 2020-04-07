@@ -126,7 +126,7 @@ const validateEmail = email => {
 }
 </script>
 
-<style scoped>
+<style>
 .contact-form {
   font-size: 1vw;
   /* flex-shrink: 1; */

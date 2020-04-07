@@ -13,7 +13,7 @@
         <h2>Débarras</h2>
       </div>
 
-      <div class="montage-in-frame">
+      <div v-if="this.frameReady" class="montage-in-frame">
         <img src="montage_in_frame_2.png" alt="" />
       </div>
 
@@ -52,13 +52,49 @@ export default {
     Navbar,
     NotificationContainer
   },
-  created() {
+  mounted() {
     console.log(firebase.auth().currentUser)
+    this.frameReady = true
+  },
+  data() {
+    return {
+      frameReady: false
+    }
   }
 }
 </script>
 
 <style scoped>
+/* ----TRANSITIONS----- */
+
+.montage-in-frame {
+  animation-duration: 3s;
+  animation-name: moving-frame;
+  animation-delay: 0.5s;
+}
+
+@keyframes moving-frame {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+
+    transform: rotate(7deg) translateX(-30em);
+  }
+  40% {
+    transform: rotate(-7deg) translateX(30em);
+  }
+  62% {
+    transform: rotate(3deg) translateX(-15em);
+  }
+  85% {
+    transform: rotate(-3deg) translateX(15em);
+  }
+}
+
+/* ----TRANSITIONS----- */
+
 .container {
   /* height: 100vh; */
   background-color: rgba(226, 231, 235, 1);

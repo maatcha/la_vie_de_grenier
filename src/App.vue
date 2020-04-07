@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view />
+    <transition name="slide-fade" mode="out-in">
+      <router-view />
+    </transition>
   </div>
 </template>
 
@@ -8,6 +10,27 @@
 
 <style>
 @import url('https://fonts.googleapis.com/css?family=Monoton|Cookie|Courgette|Roboto|Satisfy&display=swap');
+
+/* ------TRANSITIONS----------------- */
+
+.slide-fade-enter {
+  opacity: 0;
+  transform: translateX(10em);
+  /* transform: rotate3d(0, 1, 0.5, 3.142rad); */
+}
+
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.5s ease-in-out;
+}
+
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-10em);
+  /* transform: rotate3d(0, 1, 0.5, 3.142rad); */
+}
+
+/* ------TRANSITIONS----------------- */
 
 html {
   -webkit-text-size-adjust: 100%;
