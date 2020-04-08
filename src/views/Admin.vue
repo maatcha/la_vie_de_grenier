@@ -163,10 +163,10 @@ h1 {
 
 ul {
   margin: 0;
-  padding: 0 1em;
+  padding: 0 1vw;
 }
 
 p {
-  padding-left: 1em;
+  padding-left: 1vw;
 }
 </style>

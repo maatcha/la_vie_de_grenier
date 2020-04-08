@@ -128,8 +128,7 @@ const validateEmail = email => {
 
 <style>
 .contact-form {
-  font-size: 1vw;
-  /* flex-shrink: 1; */
+  font-size: 1.5vw;
   text-align: end;
 }
 
@@ -209,8 +208,4 @@ const validateEmail = email => {
   right: 10px;
   color: red;
 }
-/* .contact-form>input {
-  resize: horizontal;
-  min-width: 50px;
-} */
 </style>

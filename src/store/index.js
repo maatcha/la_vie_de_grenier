@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { customerSnapshotRefresh } from './plugins/vuexPlugins'
 import * as fb from '@/firebaseConfig.js'
 import * as notification from '@/store/modules/notification.js'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  plugins: [customerSnapshotRefresh],
   modules: {
     notification
   },
@@ -51,7 +53,7 @@ export default new Vuex.Store({
       commit('SET_CURRENT_USER', null)
       commit('SET_USER_PROFILE', {})
     },
-    updateCustomerEmails({ commit }, customerArray) {
+    updateCustomerList({ commit }, customerArray) {
       commit('SET_CUSTOMER_LIST', customerArray)
     }
   }

@@ -12,10 +12,15 @@
         <h2>Dépôt-Vente</h2>
         <h2>Débarras</h2>
       </div>
-
-      <div v-if="this.frameReady" class="montage-in-frame">
-        <img src="montage_in_frame_2.png" alt="" />
-      </div>
+      <transition
+        @before-enter="beforeFrameEnter"
+        @enter="frameEnter"
+        :css="false"
+      >
+        <div v-if="isOpen" class="montage-in-frame">
+          <img src="montage_in_frame_2.png" alt="" />
+        </div>
+      </transition>
 
       <div id="the-shop">
         <h2>La Boutique</h2>
@@ -45,8 +50,14 @@ import Footer from '@/components/Footer.vue'
 import Navbar from '@/components/Navbar.vue'
 import NotificationContainer from '@/components/NotificationContainer.vue'
 import firebase from 'firebase/app'
+import Velocity from 'velocity-animate'
 
 export default {
+  data() {
+    return {
+      isOpen: false
+    }
+  },
   components: {
     Footer,
     Navbar,
@@ -54,11 +65,20 @@ export default {
   },
   mounted() {
     console.log(firebase.auth().currentUser)
-    this.frameReady = true
+    setTimeout(() => {
+      this.isOpen = true
+    }, 400)
   },
-  data() {
-    return {
-      frameReady: false
+  methods: {
+    beforeFrameEnter(el) {
+      el.style.opacity = 0
+    },
+    frameEnter(el, done) {
+      Velocity(
+        el,
+        { opacity: 1 },
+        { delay: 400, duration: 2000, easing: 'easeInQuad', complete: done }
+      )
     }
   }
 }
@@ -68,6 +88,10 @@ export default {
 /* ----TRANSITIONS----- */
 
 .montage-in-frame {
+  width: 70vw;
+  display: flex;
+  justify-content: center;
+  margin: 1vw auto;
   animation-duration: 3s;
   animation-name: moving-frame;
   animation-delay: 0.5s;
@@ -95,6 +119,10 @@ export default {
 
 /* ----TRANSITIONS----- */
 
+.montage-in-frame > img {
+  width: 68vw;
+}
+
 .container {
   /* height: 100vh; */
   background-color: rgba(226, 231, 235, 1);
@@ -118,16 +146,6 @@ export default {
   align-items: center;
   justify-content: space-around;
   font-size: 1.5vw;
-}
-
-.montage-in-frame {
-  display: flex;
-  justify-content: center;
-  margin: 1vw 3vw;
-}
-
-.montage-in-frame > img {
-  width: 68vw;
 }
 
 .news {
