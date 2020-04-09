@@ -35,6 +35,7 @@
           Publier cette nouveauté
         </button>
       </p>
+      <img id="storedImg" src="" alt="" />
     </form>
   </div>
 </template>
@@ -42,7 +43,6 @@
 <script>
 import * as fb from '@/firebaseConfig.js'
 import NProgress from 'nprogress'
-// import jsZip from 'jszip'
 import NotificationContainer from '@/components/NotificationContainer.vue'
 export default {
   components: {
@@ -69,7 +69,6 @@ export default {
         'display: block; margin-left: auto; margin-right: auto;'
       container.appendChild(preview)
       // const file = document.querySelector('input[type=file]').files[0]
-      console.log(this.file.size)
       const reader = new FileReader()
 
       reader.onloadend = () => {
@@ -83,13 +82,36 @@ export default {
         preview.src = ''
       }
     },
-    publishNew() {
-      const img = document.querySelector('#img-preview')
-      const fileToPublish = img.src
+    storeUrl() {
+      const ref = fb.storage.ref()
+      const file = this.file
+      console.log(file.size)
+
+      const name = +new Date() + '-' + file.name
+      const metadata = {
+        contentType: file.type
+      }
+      const task = ref.child(name).put(file, metadata)
+      task
+        .then(snapshot => snapshot.ref.getDownloadURL())
+        .then(url => {
+          console.log(url)
+          document.querySelector('#storedImg').src = url
+          this.saveToDatabase(url)
+        })
+        .catch(console.error)
+    },
+    saveToDatabase(url) {
+      const fileToPublish = url
       const titleToPublish = this.title
       const priceToPublish = this.price
       const descriptionToPublish = this.description
-      if (img && titleToPublish && priceToPublish && descriptionToPublish) {
+      if (
+        fileToPublish &&
+        titleToPublish &&
+        priceToPublish &&
+        descriptionToPublish
+      ) {
         // -----------------------------------------------------
         // console.log(this.file)
         // console.log(fileToPublish)
@@ -109,7 +131,7 @@ export default {
             this.title = ''
             this.price = ''
             this.description = ''
-            img.src = ''
+            // img.src = ''
           })
           .catch(error => {
             NProgress.done()
@@ -122,13 +144,16 @@ export default {
             this.$store.dispatch('notification/add', notification)
           })
         // ----------------------------------------------------------------------------
-      } else if (!img.src) {
+      } else if (!fileToPublish) {
         alert("Il manque l'image, merci de réessayer")
       } else {
         alert(
           'Merci de remplir tous les champs pour pouvoir publier la nouveauté'
         )
       }
+    },
+    publishNew() {
+      this.storeUrl()
     }
   },
   computed: {

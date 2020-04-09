@@ -124,7 +124,6 @@ export default {
 }
 
 .container {
-  /* height: 100vh; */
   background-color: rgba(226, 231, 235, 1);
   margin-left: 12vw;
   margin-right: 12vw;

@@ -17,6 +17,19 @@
     </Navbar>
     <div class="container">
       <h1>Et voici nos dernières nouveautés !!!</h1>
+      <ul v-for="publishedNew in publishedNewsList" :key="publishedNew.id">
+        <li class="customerList">
+          <p>{{ publishedNew.createdOn | dateFromNow }}</p>
+          <p>{{ publishedNew.description }}</p>
+          <img :src="publishedNew.file" />
+          <p>
+            {{ publishedNew.price }}
+          </p>
+          <p>
+            {{ publishedNew.title }}
+          </p>
+        </li>
+      </ul>
     </div>
     <Footer></Footer>
   </div>
@@ -25,10 +38,14 @@
 <script>
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
+import { mapState } from 'vuex'
 export default {
   components: {
     Navbar,
     Footer
+  },
+  computed: {
+    ...mapState(['publishedNewsList'])
   }
 }
 </script>

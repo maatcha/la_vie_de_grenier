@@ -71,11 +71,9 @@ export default {
             email: email
           })
           .then(() => {
-            // disabledButton =true
             this.firstName = null
             this.lastName = null
             this.email = null
-            // set
           })
           .catch(error => {
             NProgress.done()

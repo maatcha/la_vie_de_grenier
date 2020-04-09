@@ -1,6 +1,6 @@
 import * as fb from '../../firebaseConfig'
 
-export function customerSnapshotRefresh(store) {
+export function customerSnapshotAutoRefresh(store) {
   fb.auth.onAuthStateChanged(user => {
     if (user) {
       if (store.state.userProfile) {
@@ -19,5 +19,18 @@ export function customerSnapshotRefresh(store) {
           })
       }
     }
+    fb.publishedNewsCollection
+      .orderBy('createdOn', 'desc')
+      .onSnapshot(querySnapshot => {
+        let publishedNewsArray = []
+
+        querySnapshot.forEach(publishedNew => {
+          let pNew = publishedNew.data()
+          pNew.id = publishedNew.id
+          publishedNewsArray.push(pNew)
+        })
+
+        store.dispatch('updatePublishedNewsList', publishedNewsArray)
+      })
   })
 }
