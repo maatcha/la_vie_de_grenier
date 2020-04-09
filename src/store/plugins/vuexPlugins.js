@@ -1,6 +1,6 @@
 import * as fb from '../../firebaseConfig'
 
-export function customerSnapshotAutoRefresh(store) {
+export function customerAndNewsSnapshotAutoRefresh(store) {
   fb.auth.onAuthStateChanged(user => {
     if (user) {
       if (store.state.userProfile) {

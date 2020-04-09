@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { customerSnapshotAutoRefresh } from './plugins/vuexPlugins'
+import { customerAndNewsSnapshotAutoRefresh } from './plugins/vuexPlugins'
 import * as fb from '@/firebaseConfig.js'
 import * as notification from '@/store/modules/notification.js'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  plugins: [customerSnapshotAutoRefresh],
+  plugins: [customerAndNewsSnapshotAutoRefresh],
   modules: {
     notification
   },

@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     notificationTypeClass() {
-      return `-text-${this.notification.type}`
+      return `text-${this.notification.type}`
     }
   },
   methods: mapActions('notification', ['remove'])
@@ -36,8 +36,15 @@ export default {
 
 <style scoped>
 .notification-bar > p {
-  margin: 1em 0 1em;
-  color: red;
+  margin: 1vw 1vw 1vw;
   font-weight: bold;
+}
+
+.text-success {
+  color: green;
+}
+
+.text-error {
+  color: red;
 }
 </style>
