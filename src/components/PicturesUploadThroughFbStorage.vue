@@ -10,31 +10,74 @@
       <input type="file" id="input" @change="previewImage" />
     </label>
 
-    <form v-if="imgUploaded" class="news-publisher-form" @submit.prevent>
+    <form v-if="imgUploaded" class="publisher-form" @submit.prevent>
+      <p>
+        <label for="publicationType"
+          >S'agit-il d'une nouveauté ou d'une promotion ?</label
+        >
+        <select
+          id="publicationType"
+          v-model="publicationType"
+          :class="{
+            news: this.publicationType === 'nouveauté',
+            promotion: this.publicationType === 'promotion'
+          }"
+        >
+          <option value="nouveauté" class="news">Nouveauté</option>
+          <option value="promotion" class="promotion">Promotion</option>
+        </select>
+      </p>
+
       <p>
         <label for="title">Titre :</label>
-        <input id="title" size="10" v-model="title" />
+        <input
+          id="title"
+          size="10"
+          v-model="title"
+          :class="{
+            news: this.publicationType === 'nouveauté',
+            promotion: this.publicationType === 'promotion'
+          }"
+        />
       </p>
 
       <p>
         <label for="price">Prix :</label>
         <br />
-        <input id="price" size="10" v-model="price" />
+        <input
+          id="price"
+          size="10"
+          v-model="price"
+          :class="{
+            news: this.publicationType === 'nouveauté',
+            promotion: this.publicationType === 'promotion'
+          }"
+        />
       </p>
 
       <p>
         <label for="description">Description :</label>
-        <textarea id="description" size="10" v-model="description" />
+        <textarea
+          id="description"
+          size="10"
+          v-model="description"
+          :class="{
+            news: this.publicationType === 'nouveauté',
+            promotion: this.publicationType === 'promotion'
+          }"
+        />
       </p>
 
       <button
         :class="{
-          disabledButton: !this.title || !this.price
+          disabledButton: !this.title || !this.price || !this.publicationType,
+          news: this.publicationType === 'nouveauté',
+          promotion: this.publicationType === 'promotion'
         }"
         class="btn-mine"
         @click="publishNew"
       >
-        Publier cette nouveauté
+        Publier cette {{ this.publicationType }}
       </button>
     </form>
   </div>
@@ -51,6 +94,7 @@ export default {
   data() {
     return {
       imgUploaded: false,
+      publicationType: '',
       title: '',
       price: null,
       description: ''
@@ -84,19 +128,28 @@ export default {
     publishNew() {
       NProgress.start()
       this.storeUrl()
-        .then(url => this.saveToDatabase(url))
+        .then(url => {
+          if (!url) {
+            throw new Error(`Défaut d'autorisation`)
+          }
+          this.saveToDatabase(url)
+        })
         .then(() => {
           NProgress.done()
           const notification = {
             type: 'success',
-            message: `La nouveauté a été publiée avec succès !`
+            message: `La ${this.publicationType} a été publiée avec succès !`
           }
           this.$store.dispatch('notification/add', notification)
         })
         .then(() => {
           const preview = document.querySelector('#img-preview')
           preview.remove()
+          this.publicationType = ''
           this.imgUploaded = false
+        })
+        .catch(error => {
+          this.publicationError(error)
         })
     },
     storeUrl() {
@@ -107,21 +160,21 @@ export default {
         contentType: file.type
       }
       const task = ref.child(name).put(file, metadata)
-
       return task
-        .then(snapshot => snapshot.ref.getDownloadURL())
-        .catch(error => {
-          NProgress.done()
-          const notification = {
-            type: 'error',
-            message:
-              `Il y a eu un problème durant l'enregistrement de l'image : ` +
-              error.message
-          }
-          this.$store.dispatch('notification/add', notification)
+        .then(snapshot => {
+          return snapshot.ref.getDownloadURL()
         })
+        .catch(error => {
+          this.publicationError(error)
+        })
+      //   fetch(myRequest).then(function(response) {
+      // console.log(response.status); // returns 200
+      // response.blob().then(function(myBlob) {
+      //   var objectURL = URL.createObjectURL(myBlob);
+      //   myImage.src = objectURL;
     },
     saveToDatabase(url) {
+      const publicationTypeToPublish = this.publicationType
       const imgToPublish = url
       const titleToPublish = this.title
       const priceToPublish = this.price
@@ -130,6 +183,7 @@ export default {
         fb.publishedNewsCollection
           .add({
             createdOn: new Date(),
+            publicationType: publicationTypeToPublish,
             img: imgToPublish,
             title: titleToPublish,
             price: priceToPublish,
@@ -140,24 +194,24 @@ export default {
             this.price = ''
             this.description = ''
           })
-          .catch(error => {
-            NProgress.done()
-            const notification = {
-              type: 'error',
-              message:
-                `Il y a eu un problème durant la publication de votre nouveauté : ` +
-                error.message
-            }
-            this.$store.dispatch('notification/add', notification)
-          })
         // ----------------------------------------------------------------------------
       } else if (!imgToPublish) {
-        alert("Il manque l'image, merci de réessayer")
+        throw new Error(`Il manque l'image, merci de réessayer`)
       } else {
-        alert(
-          `Merci de remplir les champs 'Prix' et 'Titre' pour pouvoir publier la nouveauté`
+        throw new Error(
+          `Merci de remplir les champs 'Type de publication', 'Prix' et 'Titre' pour pouvoir publier`
         )
       }
+    },
+    publicationError(error) {
+      NProgress.done()
+      const notification = {
+        type: 'error',
+        message:
+          `Il y a eu un problème durant la publication de votre ${this.publicationType} : ` +
+          error.message
+      }
+      this.$store.dispatch('notification/add', notification)
     }
   },
   computed: {
@@ -169,8 +223,7 @@ export default {
 </script>
 
 <style scoped>
-p,
-button {
+p {
   margin: 1em;
 }
 
@@ -185,33 +238,70 @@ button {
   cursor: pointer;
 }
 
+.news {
+  background-color: #283373;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.promotion {
+  background-color: #45d37f;
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+}
+
 .disabledButton {
   background: grey;
   opacity: 0.3;
 }
 
-#input {
-  display: none;
+.publisher-form {
+}
+
+.publisher-form > p {
+  display: flex;
+  flex-direction: column;
+}
+
+.publisher-form > p > label {
+  margin: 1vw;
+}
+
+#publicationType {
+  border-radius: 3px;
+  width: 12em;
+  margin: 0 1vw;
+  letter-spacing: 0.1vw;
+  font-family: 'Courgette', cursive, sans-serif;
+  font-size: 14px;
+}
+
+#publicationType:hover {
+  cursor: pointer;
 }
 
 #title {
   border-radius: 3px;
   width: 95%;
-  margin: 1vw;
-  margin-right: 1vw;
-  /* padding: 1vw; */
+  margin: 0 1vw;
 }
 
 #price {
   border-radius: 3px;
-  width: 20%;
-  margin: 1em;
+  width: 30%;
+  margin: 0 1vw;
 }
 
 #description {
   border-radius: 3px;
   width: 95%;
   height: 6em;
-  margin: 1em;
+  margin: 0 1vw;
+}
+
+#input {
+  display: none;
 }
 </style>

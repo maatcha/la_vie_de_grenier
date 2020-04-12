@@ -193,10 +193,12 @@ const validateEmail = email => {
   font-weight: bold;
   opacity: 0.6;
   letter-spacing: 1.5;
+  margin: 0 2vw !important;
 }
 
 .btn-mine:hover {
   opacity: 1;
+  cursor: pointer;
 }
 
 .error-msg {

@@ -22,7 +22,7 @@ export default {
 
 <style scoped>
 .notification-container {
-  margin-left: 26em;
+  margin-left: 50vw;
   position: fixed;
   bottom: 0;
   right: 0;

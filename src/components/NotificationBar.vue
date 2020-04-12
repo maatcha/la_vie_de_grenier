@@ -36,7 +36,7 @@ export default {
 
 <style scoped>
 .notification-bar > p {
-  margin: 1vw 1vw 1vw;
+  margin: 2vw 0 0;
   font-weight: bold;
 }
 
