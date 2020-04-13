@@ -43,7 +43,6 @@
 
       <p>
         <label for="price">Prix :</label>
-        <br />
         <input
           id="price"
           size="10"
@@ -97,7 +96,13 @@ export default {
       publicationType: '',
       title: '',
       price: null,
-      description: ''
+      description: '',
+      objectToPublish: {}
+    }
+  },
+  computed: {
+    file() {
+      return document.querySelector('input[type=file]').files[0]
     }
   },
   methods: {
@@ -127,32 +132,31 @@ export default {
     },
     publishNew() {
       NProgress.start()
-      this.storeUrl()
-        .then(url => {
-          if (!url) {
-            throw new Error(`Défaut d'autorisation`)
-          }
-          this.saveToDatabase(url)
-        })
-        .then(() => {
-          NProgress.done()
-          const notification = {
-            type: 'success',
-            message: `La ${this.publicationType} a été publiée avec succès !`
-          }
-          this.$store.dispatch('notification/add', notification)
-        })
-        .then(() => {
-          const preview = document.querySelector('#img-preview')
-          preview.remove()
-          this.publicationType = ''
-          this.imgUploaded = false
-        })
-        .catch(error => {
-          this.publicationError(error)
-        })
+
+      this.connectionTest()
+
+      this.storeUrl().then(url => this.saveToDatabase(url))
     },
     storeUrl() {
+      try {
+        this.objectToPublish = {
+          publicationTypeToPublish: this.publicationType,
+          titleToPublish: this.title,
+          priceToPublish: this.price,
+          descriptionToPublish: this.description
+        }
+        if (
+          !this.objectToPublish.publicationTypeToPublish ||
+          !this.objectToPublish.titleToPublish ||
+          !this.objectToPublish.priceToPublish
+        ) {
+          throw new Error(
+            `Merci de remplir les champs 'Type de publication', 'Prix' et 'Titre' pour pouvoir publier`
+          )
+        }
+      } catch (error) {
+        return this.publicationError(error)
+      }
       const ref = fb.storage.ref()
       const file = this.file
       const name = +new Date() + '-' + file.name
@@ -164,44 +168,57 @@ export default {
         .then(snapshot => {
           return snapshot.ref.getDownloadURL()
         })
-        .catch(error => {
-          this.publicationError(error)
+        .catch(() => {
+          throw new Error(`Défaut d'autorisation ou d'espace de stockage`)
         })
-      //   fetch(myRequest).then(function(response) {
-      // console.log(response.status); // returns 200
-      // response.blob().then(function(myBlob) {
-      //   var objectURL = URL.createObjectURL(myBlob);
-      //   myImage.src = objectURL;
     },
     saveToDatabase(url) {
-      const publicationTypeToPublish = this.publicationType
       const imgToPublish = url
-      const titleToPublish = this.title
-      const priceToPublish = this.price
-      const descriptionToPublish = this.description
-      if (imgToPublish && titleToPublish && priceToPublish) {
+      if (
+        imgToPublish &&
+        this.objectToPublish.publicationTypeToPublish &&
+        this.objectToPublish.titleToPublish &&
+        this.objectToPublish.priceToPublish
+      ) {
         fb.publishedNewsCollection
           .add({
-            createdOn: new Date(),
-            publicationType: publicationTypeToPublish,
             img: imgToPublish,
-            title: titleToPublish,
-            price: priceToPublish,
-            description: descriptionToPublish
+            createdOn: new Date(),
+            title: this.objectToPublish.titleToPublish,
+            price: this.objectToPublish.priceToPublish,
+            description: this.objectToPublish.descriptionToPublish,
+            publicationType: this.objectToPublish.publicationTypeToPublish
           })
           .then(() => {
-            this.title = ''
-            this.price = ''
-            this.description = ''
+            NProgress.done()
+            const notification = {
+              type: 'success',
+              message: `La ${this.publicationType} a été publiée avec succès !`
+            }
+            this.$store.dispatch('notification/add', notification)
           })
-        // ----------------------------------------------------------------------------
+          .then(() => {
+            this.clearData()
+          })
+          .catch(() => {
+            throw new Error(`Défaut d'autorisation ou d'espace de stockage`)
+          })
+          .catch(error => {
+            return this.publicationError(error)
+          })
       } else if (!imgToPublish) {
         throw new Error(`Il manque l'image, merci de réessayer`)
-      } else {
-        throw new Error(
-          `Merci de remplir les champs 'Type de publication', 'Prix' et 'Titre' pour pouvoir publier`
-        )
       }
+    },
+    clearData() {
+      const preview = document.querySelector('#img-preview')
+      preview.remove()
+      this.publicationType = ''
+      this.title = ''
+      this.price = ''
+      this.description = ''
+      this.objectToPublish = {}
+      this.imgUploaded = false
     },
     publicationError(error) {
       NProgress.done()
@@ -212,11 +229,16 @@ export default {
           error.message
       }
       this.$store.dispatch('notification/add', notification)
-    }
-  },
-  computed: {
-    file() {
-      return document.querySelector('input[type=file]').files[0]
+    },
+    connectionTest() {
+      const testRequest = new Request('fb')
+      fetch(testRequest)
+        .catch(() => {
+          throw new Error(`Impossible d'établir la connexion`)
+        })
+        .catch(error => {
+          this.publicationError(error)
+        })
     }
   }
 }
