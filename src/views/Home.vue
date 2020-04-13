@@ -12,15 +12,30 @@
         <h2>Dépôt-Vente</h2>
         <h2>Débarras</h2>
       </div>
-      <transition
+      <transition-group
+        id="transitionGroup"
         @before-enter="beforeFrameEnter"
         @enter="frameEnter"
         :css="false"
       >
-        <div v-if="isOpen" class="montage-in-frame">
-          <img src="montage_in_frame_2.png" alt="" />
+        <img
+          id="nailAndStringImg"
+          src="nail_and_string_med.png"
+          :key="this.nailAndStringImgId"
+        />
+        <div
+          v-if="isOpen"
+          class="montage-in-frame"
+          :key="this.montageInFrameId"
+        >
+          <img
+            id="montageInFrameImg"
+            src="montage_in_frame_quart.png"
+            alt=""
+            :key="this.montageInFrameImgId"
+          />
         </div>
-      </transition>
+      </transition-group>
 
       <div id="the-shop">
         <h2>La Boutique</h2>
@@ -55,7 +70,10 @@ import Velocity from 'velocity-animate'
 export default {
   data() {
     return {
-      isOpen: false
+      isOpen: false,
+      montageInFrameImgId: 1001,
+      montageInFrameId: 1000,
+      nailAndStringImgId: 1002
     }
   },
   components: {
@@ -68,16 +86,20 @@ export default {
     setTimeout(() => {
       this.isOpen = true
     }, 400)
+    setTimeout(() => {
+      document.querySelector('#nailAndStringImg').style.opacity = 1
+    }, 3000)
   },
   methods: {
     beforeFrameEnter(el) {
       el.style.opacity = 0
+      el.style.width = '0vw'
     },
     frameEnter(el, done) {
       Velocity(
         el,
-        { opacity: 1 },
-        { delay: 400, duration: 2000, easing: 'easeInQuad', complete: done }
+        { opacity: 1, width: '70vw' },
+        { delay: 100, duration: 600, easing: 'easeInQuad', complete: done }
       )
     }
   }
@@ -85,43 +107,70 @@ export default {
 </script>
 
 <style scoped>
+.montage-in-frame > img {
+  width: 100%;
+}
 /* ----TRANSITIONS----- */
+#transitionGroup {
+  position: relative;
+}
+
+@media only screen and (min-width: 901px) {
+  #nailAndStringImg {
+    width: 42vw !important;
+    position: absolute;
+    z-index: 0;
+    top: -7vw;
+    left: 15vw;
+    animation-duration: 3.5s;
+    animation-name: moving-string;
+    animation-delay: 0.7s;
+    opacity: 0;
+  }
+}
 
 .montage-in-frame {
-  width: 70vw;
-  display: flex;
-  justify-content: center;
-  margin: 1vw auto;
-  animation-duration: 3s;
+  position: relative;
+  margin: 5vw auto;
+  animation-duration: 3.5s;
   animation-name: moving-frame;
-  animation-delay: 0.5s;
+  animation-delay: 0.4s;
+  overflow: hidden;
 }
 
 @keyframes moving-frame {
-  0% {
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-
+  17% {
     transform: rotate(7deg) translateX(-30em);
   }
-  40% {
+  38% {
     transform: rotate(-7deg) translateX(30em);
   }
-  62% {
-    transform: rotate(3deg) translateX(-15em);
+  60% {
+    transform: rotate(4deg) translateX(-10em);
   }
-  85% {
-    transform: rotate(-3deg) translateX(15em);
+  75% {
+    transform: rotate(-2deg) translateX(5em);
+  }
+}
+
+@keyframes moving-string {
+  62% {
+    opacity: 0;
+    transform: rotate(20deg);
+  }
+  65% {
+    opacity: 0.5;
+  }
+  80% {
+    opacity: 1;
+    transform: rotate(-20deg);
+  }
+  100% {
+    opacity: 1;
   }
 }
 
 /* ----TRANSITIONS----- */
-
-.montage-in-frame > img {
-  width: 68vw;
-}
 
 .container {
   background-color: rgba(226, 231, 235, 1);
@@ -145,6 +194,10 @@ export default {
   align-items: center;
   justify-content: space-around;
   font-size: 1.5vw;
+  z-index: 2;
+}
+.subtitle > h2 {
+  z-index: 2;
 }
 
 .news {
