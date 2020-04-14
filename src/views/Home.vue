@@ -20,7 +20,7 @@
       >
         <img
           id="nailAndStringImg"
-          src="nail_and_string_med.png"
+          src="nail_and_string.png"
           :key="this.nailAndStringImgId"
         />
         <div
@@ -115,7 +115,7 @@ export default {
   position: relative;
 }
 
-@media only screen and (min-width: 901px) {
+@media (min-width: 901px) {
   #nailAndStringImg {
     width: 42vw !important;
     position: absolute;
@@ -129,13 +129,26 @@ export default {
   }
 }
 
+@media (max-width: 900px) {
+  #nailAndStringImg {
+    width: 37vw !important;
+    position: absolute;
+    z-index: 0;
+    top: -7vw;
+    left: 18vw;
+    animation-duration: 3.5s;
+    animation-name: moving-string;
+    animation-delay: 0.7s;
+    opacity: 0;
+  }
+}
+
 .montage-in-frame {
   position: relative;
   margin: 5vw auto;
   animation-duration: 3.5s;
   animation-name: moving-frame;
   animation-delay: 0.4s;
-  overflow: hidden;
 }
 
 @keyframes moving-frame {

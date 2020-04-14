@@ -36,11 +36,6 @@
         </button>
       </p>
     </form>
-    <transition name="fade">
-      <div v-if="errorMsg !== ''" class="error-msg">
-        <p>{{ errorMsg }}</p>
-      </div>
-    </transition>
   </div>
 </template>
 
@@ -53,8 +48,7 @@ export default {
       firstName: null,
       lastName: null,
       email: null,
-      password: null,
-      errorMsg: null
+      password: null
     }
   },
   methods: {
@@ -130,13 +124,19 @@ const validateEmail = email => {
   text-align: end;
 }
 
+.contact-form p {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .submitButton {
   color: red;
   font-weight: bold;
 }
 
 .btn-twitter {
-  background-color: #a80000;
+  background-color: green;
   color: white;
   border-radius: 4px;
   font-weight: bolder;
@@ -147,6 +147,7 @@ const validateEmail = email => {
 
 .btn-twitter:hover {
   opacity: 0.6;
+  cursor: pointer;
 }
 
 .btn-medium {
@@ -199,13 +200,5 @@ const validateEmail = email => {
 .btn-mine:hover {
   opacity: 1;
   cursor: pointer;
-}
-
-.error-msg {
-  font-weight: bold;
-  position: fixed;
-  bottom: 0;
-  right: 10px;
-  color: red;
 }
 </style>
