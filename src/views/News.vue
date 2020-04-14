@@ -16,24 +16,50 @@
       </div>
     </Navbar>
     <div class="container">
-      <h1>Et voici nos dernières nouveautés !!!</h1>
-      <ul v-for="publishedNew in publishedNewsList" :key="publishedNew.id">
-        <li class="news-list">
-          <p>{{ publishedNew.createdOn | dateFromNow }}</p>
-          <p>{{ publishedNew.description }}</p>
-          <img
-            class="tiny-img"
-            :src="publishedNew.img"
-            @click="fullScreen($event)"
-          />
-          <p>
-            {{ publishedNew.price }}
-          </p>
-          <p>
-            {{ publishedNew.title }}
-          </p>
-        </li>
-      </ul>
+      <div>
+        <h1>Et voici nos dernières nouveautés !!!</h1>
+        <ul v-for="publishedNew in publishedNewsList" :key="publishedNew.id">
+          <li class="news-list">
+            <p>{{ publishedNew.createdOn | dateFromNow }}</p>
+            <p>{{ publishedNew.title }}</p>
+            <img
+              class="tiny-img"
+              :src="publishedNew.img"
+              @click="fullScreen($event)"
+            />
+            <p>
+              {{ publishedNew.price }}
+            </p>
+            <p>
+              {{ publishedNew.description }}
+            </p>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h1>Et voici nos offres de déstockage du moment !!!</h1>
+        <ul
+          v-for="publishedPromotion in publishedPromotionsList"
+          :key="publishedPromotion.id"
+        >
+          <li class="news-list">
+            <p>{{ publishedPromotion.createdOn | dateFromNow }}</p>
+            <p>{{ publishedPromotion.title }}</p>
+            <img
+              class="tiny-img"
+              :src="publishedPromotion.img"
+              @click="fullScreen($event)"
+            />
+            <p>
+              {{ publishedPromotion.price }}
+            </p>
+            <p>
+              {{ publishedPromotion.description }}
+            </p>
+          </li>
+        </ul>
+      </div>
     </div>
     <Footer></Footer>
   </div>
@@ -51,12 +77,11 @@ export default {
   methods: {
     fullScreen(e) {
       e.target.classList.toggle('tiny-img')
-      // document.body.style.backgroundImage = e.target.src
       e.target.classList.toggle('full-screen-img')
     }
   },
   computed: {
-    ...mapState(['publishedNewsList'])
+    ...mapState(['publishedNewsList', 'publishedPromotionsList'])
   }
 }
 </script>

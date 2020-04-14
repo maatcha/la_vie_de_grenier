@@ -15,7 +15,8 @@ export default new Vuex.Store({
     currentUser: null,
     userProfile: {},
     customerList: [],
-    publishedNewsList: []
+    publishedNewsList: [],
+    publishedPromotionsList: []
   },
   mutations: {
     SET_CURRENT_USER(state, currentUser) {
@@ -29,6 +30,9 @@ export default new Vuex.Store({
     },
     SET_PUBLISHED_NEWS_LIST(state, publishedNewsArray) {
       state.publishedNewsList = publishedNewsArray
+    },
+    SET_PUBLISHED_PROMOTIONS_LIST(state, publishedPromotionsArray) {
+      state.publishedPromotionsList = publishedPromotionsArray
     }
   },
   actions: {
@@ -62,6 +66,9 @@ export default new Vuex.Store({
     },
     updatePublishedNewsList({ commit }, publishedNewsArray) {
       commit('SET_PUBLISHED_NEWS_LIST', publishedNewsArray)
+    },
+    updatePublishedPromotionsList({ commit }, publishedPromotionsArray) {
+      commit('SET_PUBLISHED_PROMOTIONS_LIST', publishedPromotionsArray)
     }
   }
 })

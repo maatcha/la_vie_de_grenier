@@ -23,14 +23,22 @@ export function customerAndNewsSnapshotAutoRefresh(store) {
       .orderBy('createdOn', 'desc')
       .onSnapshot(querySnapshot => {
         let publishedNewsArray = []
+        let publishedPromotionsArray = []
 
         querySnapshot.forEach(publishedNew => {
           let pNew = publishedNew.data()
-          pNew.id = publishedNew.id
-          publishedNewsArray.push(pNew)
+          pNew.id = pNew.createdOn.seconds + '-' + pNew.createdOn.nanoseconds
+          if (pNew.publicationType === 'nouveauté')
+            publishedNewsArray.push(pNew)
+          else if (pNew.publicationType === 'promotion')
+            publishedPromotionsArray.push(pNew)
         })
 
         store.dispatch('updatePublishedNewsList', publishedNewsArray)
+        store.dispatch(
+          'updatePublishedPromotionsList',
+          publishedPromotionsArray
+        )
       })
   })
 }

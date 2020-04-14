@@ -47,20 +47,33 @@
         <p>Venez vite découvrir les curiosités du moment !</p>
       </div>
 
-      <p class="news">
-        <img src="orange_bike.jpeg" alt="" />
-        <img src="shelf.jpeg" alt="" />
-        <img src="green_bike.jpeg" alt="" />
-        <img src="red_bike.jpeg" alt="" />
-        <img src="tesla_bike.jpeg" alt="" />
-        <img src="table.jpeg" alt="" />
-      </p>
+      <div class="news">
+        <h2>Quelques unes de nos nouveautés...</h2>
+        <div class="imgWrap">
+          <div v-for="publishedNew in publishedNewsList" :key="publishedNew.id">
+            <img class="tiny-img" :src="publishedNew.img" />
+          </div>
+        </div>
+      </div>
+
+      <div class="promotions">
+        <h2>Un aperçu de nos offres de déstockage...</h2>
+        <div class="imgWrap">
+          <div
+            v-for="publishedPromotion in publishedPromotionsList"
+            :key="publishedPromotion.id"
+          >
+            <img class="tiny-img" :src="publishedPromotion.img" />
+          </div>
+        </div>
+      </div>
     </div>
     <Footer></Footer>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Footer from '@/components/Footer.vue'
 import Navbar from '@/components/Navbar.vue'
 import NotificationContainer from '@/components/NotificationContainer.vue'
@@ -102,14 +115,14 @@ export default {
         { delay: 100, duration: 600, easing: 'easeInQuad', complete: done }
       )
     }
+  },
+  computed: {
+    ...mapState(['publishedNewsList', 'publishedPromotionsList'])
   }
 }
 </script>
 
 <style scoped>
-.montage-in-frame > img {
-  width: 100%;
-}
 /* ----TRANSITIONS----- */
 #transitionGroup {
   position: relative;
@@ -141,6 +154,10 @@ export default {
     animation-delay: 0.7s;
     opacity: 0;
   }
+}
+
+.montage-in-frame > img {
+  width: 100%;
 }
 
 .montage-in-frame {
@@ -185,6 +202,11 @@ export default {
 
 /* ----TRANSITIONS----- */
 
+h2 {
+  font-size: 2vw;
+  text-decoration: underline;
+}
+
 .container {
   background-color: rgba(226, 231, 235, 1);
   margin-left: 12vw;
@@ -213,7 +235,7 @@ export default {
   z-index: 2;
 }
 
-.news {
+.imgWrap {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -221,14 +243,27 @@ export default {
   padding-bottom: 3vw;
 }
 
-.news > img {
+.imgWrap img {
   height: 15vw;
-  /* width: 25vw; */
   margin-top: 1vw;
+}
+
+.promotions {
+  word-spacing: 0.5vw;
+  margin-top: 4vw;
+}
+
+.news {
+  word-spacing: 0.5vw;
+  margin-top: 4vw;
 }
 
 #the-shop {
   font-size: 2vw;
+}
+
+#the-shop > h2 {
+  word-spacing: 0.5vw;
 }
 
 #the-shop > p {
