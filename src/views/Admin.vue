@@ -12,16 +12,25 @@
       >
     </Navbar>
     <div class="container">
-      <transition name="fade">
-        <p
-          class="clickableText"
-          v-if="!displayCustomerList"
-          @click="toggleCustomerList"
-        >
-          Afficher la liste des prospects
-        </p>
+      <PicturesUploadThroughFbStorage />
+      <p
+        class="clickableText"
+        v-if="!displayCustomerList"
+        @click="toggleCustomerList"
+        :key="listUndisplayedId"
+      >
+        Afficher la liste des prospects
+      </p>
 
-        <div v-if="displayCustomerList">
+      <transition
+        @before-enter="beforeListEnter"
+        @before-leave="beforeListLeave"
+        @enter="listEnter"
+        @leave="listLeave"
+        :css="false"
+        mode="out-in"
+      >
+        <div v-if="displayCustomerList" :key="listDisplayedId">
           <p
             class="clickableText"
             v-if="displayCustomerList"
@@ -39,7 +48,7 @@
           </ul>
           <hr />
           <ul v-for="(customer, index) in customerList" :key="index">
-            <li class="customerList">
+            <li v-if="displayCustomerList" class="customerList">
               <p>{{ customer.createdOn | dateFromNow }}</p>
               <p>{{ customer.email }}</p>
               <p v-if="customer.firstName">
@@ -63,9 +72,11 @@
 import * as fb from '@/firebaseConfig.js'
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
+import PicturesUploadThroughFbStorage from '@/components/PicturesUploadThroughFbStorage.vue'
 import { mapState } from 'vuex'
 import router from '@/router/index'
 import store from '@/store/index'
+import Velocity from 'velocity-animate'
 
 function signOutAndClearUserData() {
   fb.auth
@@ -87,11 +98,15 @@ function signOutAndClearUserData() {
 export default {
   components: {
     Navbar,
-    Footer
+    Footer,
+    PicturesUploadThroughFbStorage
   },
   data() {
     return {
-      displayCustomerList: false
+      displayCustomerList: false,
+      listDisplayedId: 222222,
+      listUndisplayedId: 111111,
+      displayTestList: false
     }
   },
   created() {
@@ -105,6 +120,28 @@ export default {
     },
     toggleCustomerList() {
       this.displayCustomerList = !this.displayCustomerList
+    },
+    beforeListEnter(el) {
+      // el.style.opacity = 0
+      el.style.height = '3em'
+      el.style.overflow = 'auto'
+    },
+    listEnter(el, done) {
+      Velocity(
+        el,
+        { height: '15em' },
+        { duration: 500, easing: [60, 10], complete: done }
+      )
+    },
+    beforeListLeave(el) {
+      el.style.height = '12em'
+    },
+    listLeave(el, done) {
+      Velocity(
+        el,
+        { height: '0em' },
+        { duration: 300, easing: 'easeInCubic', complete: done }
+      )
     }
   },
   computed: {
@@ -142,13 +179,6 @@ export default {
 .customerList > p {
   margin: 0;
   padding: 0;
-}
-
-.container {
-  background-color: rgba(226, 231, 235, 1);
-  box-shadow: 0px 2px 10px rgba(226, 231, 235, 0.7);
-  margin-left: 12vw;
-  margin-right: 12vw;
 }
 
 .clickableText:hover {

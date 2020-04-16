@@ -54,14 +54,7 @@ export default {
 <style scoped>
 h1 {
   font-family: 'Courgette', cursive, sans-serif;
-  font-size: 3vw;
-}
-
-.title {
-  padding-top: 3vw;
-  margin-top: 0;
-  margin-bottom: 3vw;
-  text-align: center;
+  /* margin-bottom: 1vw; */
 }
 
 .depot-vente {
@@ -72,24 +65,10 @@ h1 {
 }
 
 .debarras {
-  /* margin-top: 0px; */
   margin: 0vw 3vw;
   padding-top: 0vw;
   padding-bottom: 3vw;
   text-align: center;
   font-size: 1.5vw;
-  /* margin-bottom: 10vw; */
-}
-
-.container {
-  background-color: rgba(226, 231, 235, 1);
-  box-shadow: 0px 2px 10px rgba(226, 231, 235, 0.7);
-  margin-left: 12vw;
-  margin-right: 12vw;
-}
-
-.wrapper {
-  background-color: rgba(54, 63, 72, 1);
-  padding-bottom: 7.5vw;
 }
 </style>

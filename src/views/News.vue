@@ -16,10 +16,14 @@
       </div>
     </Navbar>
     <div class="container">
-      <div>
-        <h1>Et voici nos dernières nouveautés !!!</h1>
-        <ul v-for="publishedNew in publishedNewsList" :key="publishedNew.id">
-          <li class="news-list">
+      <h1>Voici nos dernières nouveautés !!!</h1>
+      <div class="mosaic">
+        <div
+          class="col-4 article"
+          v-for="publishedNew in publishedNewsList"
+          :key="publishedNew.id"
+        >
+          <div>
             <p>{{ publishedNew.createdOn | dateFromNow }}</p>
             <p>{{ publishedNew.title }}</p>
             <img
@@ -33,32 +37,32 @@
             <p>
               {{ publishedNew.description }}
             </p>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
+      <hr />
 
-      <div>
-        <h1>Et voici nos offres de déstockage du moment !!!</h1>
-        <ul
+      <h1>Et voici nos offres de déstockage du moment !!!</h1>
+      <div class="mosaic">
+        <div
+          class="col-4 article"
           v-for="publishedPromotion in publishedPromotionsList"
           :key="publishedPromotion.id"
         >
-          <li class="news-list">
-            <p>{{ publishedPromotion.createdOn | dateFromNow }}</p>
-            <p>{{ publishedPromotion.title }}</p>
-            <img
-              class="tiny-img"
-              :src="publishedPromotion.img"
-              @click="fullScreen($event)"
-            />
-            <p>
-              {{ publishedPromotion.price }}
-            </p>
-            <p>
-              {{ publishedPromotion.description }}
-            </p>
-          </li>
-        </ul>
+          <p>{{ publishedPromotion.createdOn | dateFromNow }}</p>
+          <p>{{ publishedPromotion.title }}</p>
+          <img
+            class="tiny-img"
+            :src="publishedPromotion.img"
+            @click="fullScreen($event)"
+          />
+          <p>
+            {{ publishedPromotion.price }}
+          </p>
+          <p>
+            {{ publishedPromotion.description }}
+          </p>
+        </div>
       </div>
     </div>
     <Footer></Footer>
@@ -91,21 +95,23 @@ h1 {
   font-family: 'Courgette', cursive, sans-serif;
 }
 
-.container {
-  background-color: rgba(226, 231, 235, 1);
-  box-shadow: 0px 2px 10px rgba(226, 231, 235, 0.7);
-  margin-left: 12vw;
-  margin-right: 12vw;
+.mosaic {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
 }
 
-.wrapper {
-  background-color: rgba(54, 63, 72, 1);
-  padding-bottom: 7.5vw;
+.article {
+  border: solid black 1px;
+  list-style: none;
+  float: left;
+  padding: 15px;
 }
 
 .tiny-img {
-  max-height: 30vw;
-  max-width: 30vw;
+  max-height: 50%;
+  max-width: 80%;
 }
 
 .full-screen-img {

@@ -2,8 +2,15 @@
   <div>
     <form class="contact-form" @submit.prevent>
       <p v-if="validateAdminEmail(email)">
+        <input name="username" style="display: none;" />
         <label for="password">Mot de passe:</label>
-        <input id="password" size="10" v-model="password" />
+        <input
+          id="password"
+          type="password"
+          size="10"
+          v-model="password"
+          autocomplete="current-password"
+        />
       </p>
 
       <div v-else>
@@ -20,7 +27,7 @@
 
       <p>
         <label for="email">e-mail:</label>
-        <input id="email" size="10" v-model="email" />
+        <input id="email" size="10" v-model="email" autocomplete="username" />
       </p>
 
       <p>
