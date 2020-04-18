@@ -109,11 +109,6 @@ export default {
       displayTestList: false
     }
   },
-  created() {
-    window.addEventListener('beforeunload', () => {
-      signOutAndClearUserData()
-    })
-  },
   methods: {
     logout() {
       signOutAndClearUserData()
@@ -122,7 +117,6 @@ export default {
       this.displayCustomerList = !this.displayCustomerList
     },
     beforeListEnter(el) {
-      // el.style.opacity = 0
       el.style.height = '3em'
       el.style.overflow = 'auto'
     },
@@ -146,6 +140,11 @@ export default {
   },
   computed: {
     ...mapState(['currentUser', 'userProfile', 'customerList'])
+  },
+  created() {
+    window.addEventListener('beforeunload', () => {
+      signOutAndClearUserData()
+    })
   },
   updated() {
     if (!this.currentUser) {
