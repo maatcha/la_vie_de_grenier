@@ -10,7 +10,7 @@
         type="file"
         multiple
         id="input"
-        @change="filesToImgUrlArrayAndPreviews($event)"
+        @change="previewFilesAndStockImgUrlsInArray($event)"
       />
     </label>
     <!-- <canvas v-if="imgUploaded" :name="this.file.name" id="canvas"></canvas> -->
@@ -20,11 +20,19 @@
 <script>
 // import resizeImage from 'resize-image'
 export default {
+  data() {
+    return {
+      imgUploaded: false,
+      urlsArray: []
+    }
+  },
   methods: {
-    filesToImgUrlArrayAndPreviews(e) {
-      let filesArray = []
+    previewFilesAndStockImgUrlsInArray(e) {
+      let urlsArray = []
       e.target.files.forEach((file, index) => {
-        const previewElt = this.createPreviewElement(file, index)
+        let bigAndSmallUrls = []
+        bigAndSmallUrls.name = file.name
+        const previewElt = this.createPreviewElementAndCloseButton(file, index)
 
         let imgUrl = new Image()
         imgUrl.name = file.name
@@ -34,16 +42,24 @@ export default {
           imgUrl.src = reader.result
           previewElt.src = reader.result
         }
-        reader.readAsDataURL(file)
-        filesArray.push(imgUrl)
-
-        reader.onerror(console.error)
+        if (file) {
+          reader.readAsDataURL(file)
+          const smallImg = this.resize(imgUrl)
+          bigAndSmallUrls.push(imgUrl)
+          bigAndSmallUrls.push(smallImg)
+          urlsArray.push(bigAndSmallUrls)
+        } else {
+          previewElt.src = ''
+          imgUrl.src = ''
+        }
       })
 
-      console.log(filesArray)
+      this.toggleimgUploaded()
+      this.urlsArray = urlsArray
+      console.log(this.urlsArray)
     },
-    resize(file) {
-      console.log(file)
+    resize(img) {
+      return img
 
       // -------------------------------------------------------
       // createImageBitmap(file, {
@@ -60,28 +76,42 @@ export default {
       // console.log(canvas)
       // canvas.toBlob(blob => (this.smallFile = blob))
     },
-    createPreviewElement(file, index) {
+    createPreviewElementAndCloseButton(file, index) {
       const previewsContainer = document.querySelector('.previews-container')
+
+      let previewAndbutton = document.createElement('div')
+      previewAndbutton.classList.add('col-4')
+      previewsContainer.appendChild(previewAndbutton)
+
       let preview = document.createElement('img')
       preview.id = `img-preview-number-${index}`
-      preview.width = 200
       preview.classList.add('col-4')
-      preview.style.cssText =
-        'display: block; margin-left: auto; margin-right: auto;'
-      previewsContainer.appendChild(preview)
+      preview.scale = 1
+      previewAndbutton.appendChild(preview)
+
+      let closePreviewButton = document.createElement('button')
+      closePreviewButton.id = `close-preview-number-${index}`
+      closePreviewButton.width = 100
+      closePreviewButton.innerText = 'X'
+      closePreviewButton.addEventListener('click', () => {
+        closePreviewButton.remove()
+        preview.remove()
+        if (this.urlsArray.length <= 2) this.toggleimgUploaded
+        let filteredArray = this.urlsArray.filter(
+          bigAndSmallUrls => bigAndSmallUrls.name !== file.name
+        )
+        this.urlsArray = filteredArray
+        console.log(this.urlsArray)
+        previewAndbutton.remove()
+      })
+      closePreviewButton.style.cssText =
+        'position: relative; bottom: 42px; right: 25px;'
+      previewAndbutton.appendChild(closePreviewButton)
+
       return preview
-
-      // const reader = new FileReader()
-
-      // reader.onloadend = () => {
-      //   preview.src = reader.result
-      // }
-      // if (this.file) {
-      //   reader.readAsDataURL(this.file)
-      //   this.toggleimgUploaded()
-      // } else {
-      //   preview.src = ''
-      // }
+    },
+    toggleimgUploaded() {
+      this.imgUploaded = !this.imgUploaded
     }
   }
 }
