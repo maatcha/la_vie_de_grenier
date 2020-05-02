@@ -28,9 +28,11 @@
             <p>{{ publishedNew.title }}</p>
             <img
               class="tiny-img"
-              :src="publishedNew.img"
-              @click="fullScreen($event)"
+              :src="publishedNew.img[0]"
+              @click="seeFullPublication(publishedNew.id)"
             />
+            <p>cliquez sur l'image pour voir d'autres photos</p>
+
             <p>
               {{ publishedNew.price }}
             </p>
@@ -53,9 +55,10 @@
           <p>{{ publishedPromotion.title }}</p>
           <img
             class="tiny-img"
-            :src="publishedPromotion.img"
-            @click="fullScreen($event)"
+            :src="publishedPromotion.img[0]"
+            @click="seeFullPublication(publishedPromotion.id)"
           />
+          <p>cliquez sur l'image pour voir d'autres photos</p>
           <p>
             {{ publishedPromotion.price }}
           </p>
@@ -79,9 +82,8 @@ export default {
     Footer
   },
   methods: {
-    fullScreen(e) {
-      e.target.classList.toggle('tiny-img')
-      e.target.classList.toggle('full-screen-img')
+    seeFullPublication(publicationId) {
+      console.log(publicationId)
     }
   },
   computed: {

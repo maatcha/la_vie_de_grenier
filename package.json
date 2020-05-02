@@ -19,7 +19,6 @@
     "node-sass": "^4.13.0",
     "nprogress": "^0.2.0",
     "path": "^0.12.7",
-    "resize-image": "^0.1.0",
     "sass-loader": "^8.0.0",
     "velocity-animate": "^1.5.2",
     "vue": "^2.6.10",

@@ -1,16 +1,22 @@
 <template>
   <div class="container">
     <NotificationContainer />
+    <div class="previews-container"></div>
 
     <label
       v-if="!imgUploaded"
       for="input"
       class="files-uploader-btn btn-treehouse"
       >Importer mes photos
-      <input type="file" id="input" @change="previewImage" />
+      <input
+        type="file"
+        multiple
+        id="input"
+        @change="previewFilesAndStockImagesInArray"
+      />
     </label>
 
-    <form v-if="imgUploaded" class="publisher-form" @submit.prevent>
+    <form v-else class="publisher-form" @submit.prevent>
       <p>
         <label for="publicationType"
           >S'agit-il d'une nouveauté ou d'une promotion ?</label
@@ -78,6 +84,9 @@
       >
         Publier cette {{ this.publicationType }}
       </button>
+      <button @click="consoleLog">
+        Console log
+      </button>
     </form>
   </div>
 </template>
@@ -97,47 +106,125 @@ export default {
       title: '',
       price: null,
       description: '',
-      objectToPublish: {}
+      objectToPublish: {},
+      imageUrlsArray: [],
+      imagesArray: []
     }
   },
   computed: {
-    file() {
-      return document.querySelector('input[type=file]').files[0]
+    filesToStore() {
+      return document.querySelector('input[type=file]').files
     }
   },
   methods: {
+    previewFilesAndStockImagesInArray() {
+      this.filesToStore.forEach((file, index) => {
+        const previewElt = this.createPreviewElementAndCloseButton(file, index)
+
+        let image = new Image()
+        image.name = file.name
+        const reader = new FileReader()
+
+        reader.onloadend = () => {
+          image.src = reader.result
+          previewElt.src = reader.result
+        }
+        if (file) {
+          reader.readAsDataURL(file)
+          this.imagesArray.push(image)
+        } else {
+          previewElt.src = ''
+          image.src = ''
+        }
+      })
+      this.toggleimgUploaded()
+    },
     toggleimgUploaded() {
       this.imgUploaded = !this.imgUploaded
     },
-    previewImage() {
-      const container = document.querySelector('.container')
+    createPreviewElementAndCloseButton(file, index) {
+      const previewsContainer = document.querySelector('.previews-container')
+
+      let previewAndbutton = document.createElement('div')
+      previewAndbutton.classList.add('col-4')
+      previewsContainer.appendChild(previewAndbutton)
+
       let preview = document.createElement('img')
-      preview.id = 'img-preview'
-      preview.width = 200
-      preview.style.cssText =
-        'display: block; margin-left: auto; margin-right: auto;'
-      container.appendChild(preview)
-      const reader = new FileReader()
+      preview.id = `img-preview-number-${index}`
+      preview.classList.add('col-4')
+      preview.scale = 1
+      previewAndbutton.appendChild(preview)
 
-      reader.onloadend = () => {
-        preview.src = reader.result
-      }
+      let closePreviewButton = document.createElement('button')
+      closePreviewButton.id = `close-preview-number-${index}`
+      closePreviewButton.width = 100
+      closePreviewButton.innerText = 'X'
+      closePreviewButton.addEventListener('click', () => {
+        closePreviewButton.remove()
+        preview.remove()
 
-      if (this.file) {
-        reader.readAsDataURL(this.file)
-        this.toggleimgUploaded()
-      } else {
-        preview.src = ''
-      }
+        let filteredImagesArray = this.imagesArray.filter(
+          image => image.name !== file.name
+        )
+        this.imagesArray = filteredImagesArray
+
+        // this.updateFilesToStore(this.imagesArray)
+
+        console.log(this.filesToStore)
+        console.log(this.imagesArray)
+
+        previewAndbutton.remove()
+        if (!this.imagesArray.length) {
+          // this.imagesArray = []
+          // const drewCanvas = document.querySelector('#canvas')
+          // drewCanvas.remove()
+          this.toggleimgUploaded()
+        }
+      })
+      closePreviewButton.style.cssText =
+        'position: relative; bottom: 42px; right: 25px;'
+      previewAndbutton.appendChild(closePreviewButton)
+
+      return preview
     },
     publishNew() {
       NProgress.start()
 
       this.connectionTest()
 
-      this.storeUrl().then(url => this.saveToDatabase(url))
+      this.resize().then(smallBlob => this.storeImages(smallBlob))
+
+      // this.saveToDatabase()
     },
-    storeUrl() {
+    consoleLog() {
+      console.log(this.imageUrlsArray)
+      this.saveToDatabase()
+    },
+    resize() {
+      const image = this.imagesArray[0]
+      const container = document.querySelector('.container')
+
+      let canvas = document.createElement('canvas')
+      container.appendChild(canvas)
+      canvas.id = 'canvas'
+      canvas.max_size = 544
+      canvas
+        .getContext('2d')
+        .drawImage(image, 0, 0, canvas.width, canvas.height)
+      const drewCanvas = document.querySelector('#canvas')
+      return new Promise((resolve, reject) => {
+        drewCanvas.toBlob((blob, error) => {
+          blob.id = 'resized-image'
+          blob.name = 'small-' + image.name
+          if (error) {
+            reject(error)
+          } else {
+            resolve(blob)
+          }
+        })
+      })
+    },
+    storeImages(smallBlob) {
       try {
         this.objectToPublish = {
           publicationTypeToPublish: this.publicationType,
@@ -157,32 +244,43 @@ export default {
       } catch (error) {
         return this.publicationError(error)
       }
+      this.filesToStore.forEach(file => {
+        this.storeFileOrBlob(file)
+      })
+      this.storeFileOrBlob(smallBlob)
+      this.imagesArray = []
+    },
+    storeFileOrBlob(file) {
       const ref = fb.storage.ref()
-      const file = this.file
       const name = +new Date() + '-' + file.name
       const metadata = {
         contentType: file.type
       }
       const task = ref.child(name).put(file, metadata)
-      return task
+      task
         .then(snapshot => {
-          return snapshot.ref.getDownloadURL()
+          let imageUrl = snapshot.ref.getDownloadURL()
+          this.imageUrlsArray.push(imageUrl)
+          console.log('stored')
         })
         .catch(() => {
           throw new Error(`Défaut d'autorisation ou d'espace de stockage`)
         })
     },
-    saveToDatabase(url) {
-      const imgToPublish = url
+    saveToDatabase() {
+      console.log(this.imageUrlsArray)
+      const imageUrlsArray = this.imageUrlsArray.map(url => url.i)
+      console.log(imageUrlsArray)
+      debugger
       if (
-        imgToPublish &&
+        imageUrlsArray &&
         this.objectToPublish.publicationTypeToPublish &&
         this.objectToPublish.titleToPublish &&
         this.objectToPublish.priceToPublish
       ) {
         fb.publishedNewsCollection
           .add({
-            img: imgToPublish,
+            img: imageUrlsArray,
             createdOn: new Date(),
             title: this.objectToPublish.titleToPublish,
             price: this.objectToPublish.priceToPublish,
@@ -206,8 +304,8 @@ export default {
           .catch(error => {
             return this.publicationError(error)
           })
-      } else if (!imgToPublish) {
-        throw new Error(`Il manque l'image, merci de réessayer`)
+      } else if (!imageUrlsArray) {
+        throw new Error(`Il manque la (les) image(s), merci de réessayer`)
       }
     },
     clearData() {
