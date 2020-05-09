@@ -4,7 +4,7 @@
     <div class="previews-container"></div>
 
     <label
-      v-if="!imgUploaded"
+      v-show="!imgUploaded && !selectionValidated"
       for="input"
       class="files-uploader-btn btn-treehouse"
       >Importer mes photos
@@ -16,7 +16,11 @@
       />
     </label>
 
-    <form v-else class="publisher-form" @submit.prevent>
+    <form
+      v-show="imgUploaded && selectionValidated"
+      class="publisher-form"
+      @submit.prevent
+    >
       <p>
         <label for="publicationType"
           >S'agit-il d'une nouveauté ou d'une promotion ?</label
@@ -84,10 +88,16 @@
       >
         Publier cette {{ this.publicationType }}
       </button>
-      <button @click="consoleLog">
-        Console log
+      <button class="btn-mine" @click="clearData">
+        ANNULER LA PUBLICATION
       </button>
     </form>
+    <button
+      v-show="imgUploaded && !selectionValidated"
+      @click="validateSelectionAndMinifyTheFirst"
+    >
+      validate Selection And Minify The First
+    </button>
   </div>
 </template>
 
@@ -102,22 +112,22 @@ export default {
   data() {
     return {
       imgUploaded: false,
+      selectionValidated: false,
       publicationType: '',
       title: '',
       price: null,
       description: '',
       objectToPublish: {},
       imageUrlsArray: [],
-      imagesArray: []
-    }
-  },
-  computed: {
-    filesToStore() {
-      return document.querySelector('input[type=file]').files
+      imagesArray: [],
+      filesToStore: []
     }
   },
   methods: {
     previewFilesAndStockImagesInArray() {
+      const input = document.querySelector('#input')
+      this.filesToStore = input.files
+
       this.filesToStore.forEach((file, index) => {
         const previewElt = this.createPreviewElementAndCloseButton(file, index)
 
@@ -146,7 +156,7 @@ export default {
       const previewsContainer = document.querySelector('.previews-container')
 
       let previewAndbutton = document.createElement('div')
-      previewAndbutton.classList.add('col-4')
+      previewAndbutton.classList.add('col-4', 'preview')
       previewsContainer.appendChild(previewAndbutton)
 
       let preview = document.createElement('img')
@@ -157,6 +167,7 @@ export default {
 
       let closePreviewButton = document.createElement('button')
       closePreviewButton.id = `close-preview-number-${index}`
+      closePreviewButton.classList.add('preview-closer')
       closePreviewButton.width = 100
       closePreviewButton.innerText = 'X'
       closePreviewButton.addEventListener('click', () => {
@@ -168,17 +179,10 @@ export default {
         )
         this.imagesArray = filteredImagesArray
 
-        // this.updateFilesToStore(this.imagesArray)
-
-        console.log(this.filesToStore)
-        console.log(this.imagesArray)
-
         previewAndbutton.remove()
         if (!this.imagesArray.length) {
-          // this.imagesArray = []
-          // const drewCanvas = document.querySelector('#canvas')
-          // drewCanvas.remove()
           this.toggleimgUploaded()
+          this.filesToStore = []
         }
       })
       closePreviewButton.style.cssText =
@@ -187,18 +191,21 @@ export default {
 
       return preview
     },
-    publishNew() {
+    validateSelectionAndMinifyTheFirst() {
       NProgress.start()
 
       this.connectionTest()
 
       this.resize().then(smallBlob => this.storeImages(smallBlob))
 
-      // this.saveToDatabase()
-    },
-    consoleLog() {
-      console.log(this.imageUrlsArray)
-      this.saveToDatabase()
+      const previewClosers = document.querySelectorAll('.preview-closer')
+      for (let previewCloser of previewClosers) {
+        previewCloser.remove()
+      }
+
+      NProgress.done()
+
+      this.selectionValidated = true
     },
     resize() {
       const image = this.imagesArray[0]
@@ -225,25 +232,6 @@ export default {
       })
     },
     storeImages(smallBlob) {
-      try {
-        this.objectToPublish = {
-          publicationTypeToPublish: this.publicationType,
-          titleToPublish: this.title,
-          priceToPublish: this.price,
-          descriptionToPublish: this.description
-        }
-        if (
-          !this.objectToPublish.publicationTypeToPublish ||
-          !this.objectToPublish.titleToPublish ||
-          !this.objectToPublish.priceToPublish
-        ) {
-          throw new Error(
-            `Merci de remplir les champs 'Type de publication', 'Prix' et 'Titre' pour pouvoir publier`
-          )
-        }
-      } catch (error) {
-        return this.publicationError(error)
-      }
       this.filesToStore.forEach(file => {
         this.storeFileOrBlob(file)
       })
@@ -267,11 +255,31 @@ export default {
           throw new Error(`Défaut d'autorisation ou d'espace de stockage`)
         })
     },
-    saveToDatabase() {
-      console.log(this.imageUrlsArray)
+    publishNew() {
+      NProgress.start()
+      this.connectionTest()
+
+      try {
+        this.objectToPublish = {
+          publicationTypeToPublish: this.publicationType,
+          titleToPublish: this.title,
+          priceToPublish: this.price,
+          descriptionToPublish: this.description
+        }
+        if (
+          !this.objectToPublish.publicationTypeToPublish ||
+          !this.objectToPublish.titleToPublish ||
+          !this.objectToPublish.priceToPublish
+        ) {
+          throw new Error(
+            `Merci de remplir les champs 'Type de publication', 'Prix' et 'Titre' pour pouvoir publier`
+          )
+        }
+      } catch (error) {
+        return this.publicationError(error)
+      }
+
       const imageUrlsArray = this.imageUrlsArray.map(url => url.i)
-      console.log(imageUrlsArray)
-      debugger
       if (
         imageUrlsArray &&
         this.objectToPublish.publicationTypeToPublish &&
@@ -309,14 +317,22 @@ export default {
       }
     },
     clearData() {
-      const preview = document.querySelector('#img-preview')
-      preview.remove()
+      const previews = document.querySelectorAll('.preview')
+      const canvas = document.querySelector('#canvas')
+      for (let preview of previews) {
+        preview.remove()
+      }
+      canvas.remove()
       this.publicationType = ''
       this.title = ''
       this.price = ''
       this.description = ''
       this.objectToPublish = {}
       this.imgUploaded = false
+      this.selectionValidated = false
+      this.imageUrlsArray = []
+      this.imagesArray = []
+      this.filesToStore = []
     },
     publicationError(error) {
       NProgress.done()
