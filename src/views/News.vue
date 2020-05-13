@@ -41,6 +41,147 @@
             </p>
           </div>
         </div>
+        <!-- JUST FOR RENDERING ADJUSTMENTS -->
+        <!-- ------------------------------------------------------------------------------------------------------------- -->
+        <div
+          class="col-4 article"
+          v-for="publishedNew in publishedNewsList"
+          :key="publishedNew.id"
+        >
+          <div>
+            <p>{{ publishedNew.createdOn | dateFromNow }}</p>
+            <p>{{ publishedNew.title }}</p>
+            <img
+              class="tiny-img"
+              :src="publishedNew.img[0]"
+              @click="seeFullPublication(publishedNew.id)"
+            />
+            <p>cliquez sur l'image pour voir d'autres photos</p>
+
+            <p>
+              {{ publishedNew.price }}
+            </p>
+            <p>
+              {{ publishedNew.description }}
+            </p>
+          </div>
+        </div>
+        <div
+          class="col-4 article"
+          v-for="publishedNew in publishedNewsList"
+          :key="publishedNew.id"
+        >
+          <div>
+            <p>{{ publishedNew.createdOn | dateFromNow }}</p>
+            <p>{{ publishedNew.title }}</p>
+            <img
+              class="tiny-img"
+              :src="publishedNew.img[0]"
+              @click="seeFullPublication(publishedNew.id)"
+            />
+            <p>cliquez sur l'image pour voir d'autres photos</p>
+
+            <p>
+              {{ publishedNew.price }}
+            </p>
+            <p>
+              {{ publishedNew.description }}
+            </p>
+          </div>
+        </div>
+        <div
+          class="col-4 article"
+          v-for="publishedNew in publishedNewsList"
+          :key="publishedNew.id"
+        >
+          <div>
+            <p>{{ publishedNew.createdOn | dateFromNow }}</p>
+            <p>{{ publishedNew.title }}</p>
+            <img
+              class="tiny-img"
+              :src="publishedNew.img[0]"
+              @click="seeFullPublication(publishedNew.id)"
+            />
+            <p>cliquez sur l'image pour voir d'autres photos</p>
+
+            <p>
+              {{ publishedNew.price }}
+            </p>
+            <p>
+              {{ publishedNew.description }}
+            </p>
+          </div>
+        </div>
+        <div
+          class="col-4 article"
+          v-for="publishedNew in publishedNewsList"
+          :key="publishedNew.id"
+        >
+          <div>
+            <p>{{ publishedNew.createdOn | dateFromNow }}</p>
+            <p>{{ publishedNew.title }}</p>
+            <img
+              class="tiny-img"
+              :src="publishedNew.img[0]"
+              @click="seeFullPublication(publishedNew.id)"
+            />
+            <p>cliquez sur l'image pour voir d'autres photos</p>
+
+            <p>
+              {{ publishedNew.price }}
+            </p>
+            <p>
+              {{ publishedNew.description }}
+            </p>
+          </div>
+        </div>
+        <div
+          class="col-4 article"
+          v-for="publishedNew in publishedNewsList"
+          :key="publishedNew.id"
+        >
+          <div>
+            <p>{{ publishedNew.createdOn | dateFromNow }}</p>
+            <p>{{ publishedNew.title }}</p>
+            <img
+              class="tiny-img"
+              :src="publishedNew.img[0]"
+              @click="seeFullPublication(publishedNew.id)"
+            />
+            <p>cliquez sur l'image pour voir d'autres photos</p>
+
+            <p>
+              {{ publishedNew.price }}
+            </p>
+            <p>
+              {{ publishedNew.description }}
+            </p>
+          </div>
+        </div>
+        <div
+          class="col-4 article"
+          v-for="publishedNew in publishedNewsList"
+          :key="publishedNew.id"
+        >
+          <div>
+            <p>{{ publishedNew.createdOn | dateFromNow }}</p>
+            <p>{{ publishedNew.title }}</p>
+            <img
+              class="tiny-img"
+              :src="publishedNew.img[0]"
+              @click="seeFullPublication(publishedNew.id)"
+            />
+            <p>cliquez sur l'image pour voir d'autres photos</p>
+
+            <p>
+              {{ publishedNew.price }}
+            </p>
+            <p>
+              {{ publishedNew.description }}
+            </p>
+          </div>
+        </div>
+        <!-- ------------------------------------------------------------------------------------------------------------- -->
       </div>
       <hr />
 
@@ -102,6 +243,7 @@ h1 {
   padding: 0;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .article {

@@ -366,12 +366,14 @@ p {
 .container {
   background-color: rgba(226, 231, 235, 1);
   box-shadow: 0px 2px 10px rgba(226, 231, 235, 0.7);
-  margin-left: 12vw;
+  padding: 4vw 0 3vw 0;
+  margin-left: 4vw;
   margin-right: 12vw;
 }
 
 .files-uploader-btn {
   cursor: pointer;
+  margin-top: 22px;
 }
 
 .news {

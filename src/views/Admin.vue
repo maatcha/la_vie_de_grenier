@@ -180,6 +180,11 @@ export default {
   padding: 0;
 }
 
+.clickableText {
+  padding-bottom: 2vw;
+  margin-left: 3vw;
+}
+
 .clickableText:hover {
   cursor: pointer;
   text-decoration: underline;

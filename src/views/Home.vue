@@ -51,8 +51,17 @@
         <h2>Quelques unes de nos nouveautés...</h2>
         <div class="imgWrap">
           <div v-for="publishedNew in publishedNewsList" :key="publishedNew.id">
-            <img class="tiny-img" :src="publishedNew.img" />
+            <img class="tiny-img" :src="publishedNew.img[0]" />
           </div>
+          <!-- JUST FOR RENDERING ADJUSTMENTS -->
+          <!-- --------------------------------------------------------------------------------------- -->
+          <div v-for="publishedNew in publishedNewsList" :key="publishedNew.id">
+            <img class="tiny-img" :src="publishedNew.img[0]" />
+          </div>
+          <div v-for="publishedNew in publishedNewsList" :key="publishedNew.id">
+            <img class="tiny-img" :src="publishedNew.img[0]" />
+          </div>
+          <!-- --------------------------------------------------------------------------------------- -->
         </div>
       </div>
 
@@ -63,8 +72,30 @@
             v-for="publishedPromotion in publishedPromotionsList"
             :key="publishedPromotion.id"
           >
-            <img class="tiny-img" :src="publishedPromotion.img" />
+            <img class="tiny-img" :src="publishedPromotion.img[0]" />
           </div>
+          <!-- JUST FOR RENDERING ADJUSTMENTS -->
+          <!-- --------------------------------------------------------------------------------------- -->
+          <div
+            v-for="publishedPromotion in publishedPromotionsList"
+            :key="publishedPromotion.id"
+          >
+            <img class="tiny-img" :src="publishedPromotion.img[0]" />
+          </div>
+          <div
+            v-for="publishedPromotion in publishedPromotionsList"
+            :key="publishedPromotion.id"
+          >
+            <img class="tiny-img" :src="publishedPromotion.img[0]" />
+          </div>
+          <div
+            v-for="publishedPromotion in publishedPromotionsList"
+            :key="publishedPromotion.id"
+          >
+            <img class="tiny-img" :src="publishedPromotion.img[0]" />
+          </div>
+
+          <!-- --------------------------------------------------------------------------------------- -->
         </div>
       </div>
     </div>
