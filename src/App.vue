@@ -46,16 +46,16 @@
 }
 
 @keyframes moving-string {
-  62% {
+  60% {
     opacity: 0;
-    transform: rotate(20deg);
+    transform: rotate(18deg);
   }
   65% {
     opacity: 0.5;
   }
-  80% {
+  75% {
     opacity: 1;
-    transform: rotate(-20deg);
+    transform: rotate(-18deg);
   }
   100% {
     opacity: 1;
