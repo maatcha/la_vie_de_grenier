@@ -1,27 +1,15 @@
 <template>
-  <div class="product-card" @click="seeFullPublication">
+  <div
+    class="product-card"
+    @click="seeFullPublication(publishedNewOrPromotion)"
+  >
     <p>{{ publishedNewOrPromotion.createdOn | dateFromNow }}</p>
     <p>{{ publishedNewOrPromotion.title }}</p>
-    <img
-      class="tiny-img"
-      :src="publishedNewOrPromotion.img[0]"
-      @click="seeFullPublication(publishedNewOrPromotion.id)"
-    />
+    <img class="tiny-img" :src="publishedNewOrPromotion.img[0]" />
     <p class="price">PRIX : {{ publishedNewOrPromotion.price }}</p>
     <p>
       Cliquez pour voir d'autres photos ou réserver !
     </p>
-
-    <div v-if="fullPublication">
-      {{ publishedNewOrPromotion.description }}
-      <div class="mosaic">
-        <img
-          v-for="(publicationImage, index) in publishedNewOrPromotion.img"
-          :src="publicationImage"
-          :key="index"
-        />
-      </div>
-    </div>
   </div>
 </template>
 
@@ -35,12 +23,12 @@ export default {
   },
   data() {
     return {
-      fullPublication: false
+      fullPublication: null
     }
   },
   methods: {
-    seeFullPublication() {
-      this.fullPublication = !this.fullPublication
+    seeFullPublication(productCard) {
+      this.$emit('set-full-publication', productCard)
     }
   }
 }
@@ -59,29 +47,9 @@ export default {
   cursor: pointer;
 }
 
-.mosaic {
-  /* margin: 0;
-  padding: 0;
-  flex-direction: row;*/
-  flex-wrap: wrap;
-  display: flex;
-  justify-content: center;
-}
-
-.mosaic > img {
-  max-width: 20vw;
-}
-
 .tiny-img {
   max-height: 50%;
   max-width: 80%;
-}
-
-.full-screen-img {
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100vw;
 }
 
 .price {
