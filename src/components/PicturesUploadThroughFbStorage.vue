@@ -4,10 +4,18 @@
     <div class="previews-container"></div>
 
     <label
-      v-show="!imgUploaded && !selectionValidated"
+      v-show="!imgUploaded && !selectionValidated && !mainImageSelected"
+      for="main-input"
+      class="files-uploader-btn btn-treehouse"
+      >Importer la photo principale
+      <input type="file" id="main-input" @change="previewFilesAndStockImage" />
+    </label>
+
+    <label
+      v-show="!imgUploaded && !selectionValidated && mainImageSelected"
       for="input"
       class="files-uploader-btn btn-treehouse"
-      >Importer mes photos
+      >Importer des photos complémentaires
       <input
         type="file"
         multiple
@@ -94,9 +102,17 @@
     </form>
     <button
       v-show="imgUploaded && !selectionValidated"
+      class="btn-mine"
       @click="validateSelectionAndMinifyTheFirst"
     >
-      validate Selection And Minify The First
+      Valider cette Sélection
+    </button>
+    <button
+      v-show="imgUploaded && !selectionValidated"
+      class="submitButton"
+      @click="clearData"
+    >
+      Annuler la publication
     </button>
   </div>
 </template>
@@ -113,6 +129,7 @@ export default {
     return {
       imgUploaded: false,
       selectionValidated: false,
+      mainImageSelected: false,
       publicationType: '',
       title: '',
       price: null,
@@ -124,35 +141,52 @@ export default {
     }
   },
   methods: {
+    previewFilesAndStockImage() {
+      this.imagesArray = []
+      const mainInput = document.querySelector('#main-input')
+      let file = mainInput.files[0]
+      let previewElt = this.createPreviewElementAndCloseButton(file)
+
+      this.convertToImage(file, previewElt)
+
+      this.mainImageSelected = true
+    },
+
     previewFilesAndStockImagesInArray() {
       const input = document.querySelector('#input')
       this.filesToStore = input.files
 
-      this.filesToStore.forEach((file, index) => {
-        const previewElt = this.createPreviewElementAndCloseButton(file, index)
+      this.filesToStore.forEach(file => {
+        const previewElt = this.createPreviewElementAndCloseButton(file)
 
-        let image = new Image()
-        image.name = file.name
-        const reader = new FileReader()
-
-        reader.onloadend = () => {
-          image.src = reader.result
-          previewElt.src = reader.result
-        }
-        if (file) {
-          reader.readAsDataURL(file)
-          this.imagesArray.push(image)
-        } else {
-          previewElt.src = ''
-          image.src = ''
-        }
+        this.convertToImage(file, previewElt)
       })
       this.toggleimgUploaded()
     },
+
+    convertToImage(file, previewElt) {
+      let image = new Image()
+      image.name = file.name
+      let reader = new FileReader()
+
+      reader.onloadend = () => {
+        image.src = reader.result
+        previewElt.src = reader.result
+      }
+      if (file) {
+        reader.readAsDataURL(file)
+        this.imagesArray.push(image)
+      } else {
+        previewElt.src = ''
+        image.src = ''
+      }
+    },
+
     toggleimgUploaded() {
       this.imgUploaded = !this.imgUploaded
     },
-    createPreviewElementAndCloseButton(file, index) {
+
+    createPreviewElementAndCloseButton(file) {
       const previewsContainer = document.querySelector('.previews-container')
 
       let previewAndbutton = document.createElement('div')
@@ -160,13 +194,11 @@ export default {
       previewsContainer.appendChild(previewAndbutton)
 
       let preview = document.createElement('img')
-      preview.id = `img-preview-number-${index}`
       preview.classList.add('col-4')
       preview.scale = 1
       previewAndbutton.appendChild(preview)
 
       let closePreviewButton = document.createElement('button')
-      closePreviewButton.id = `close-preview-number-${index}`
       closePreviewButton.classList.add('preview-closer')
       closePreviewButton.width = 100
       closePreviewButton.innerText = 'X'
@@ -180,8 +212,13 @@ export default {
         this.imagesArray = filteredImagesArray
 
         previewAndbutton.remove()
+        if (this.imagesArray.length === 1) {
+          this.imgUploaded = false
+        }
         if (!this.imagesArray.length) {
-          this.toggleimgUploaded()
+          this.mainImageSelected = false
+          this.imgUploaded = false
+          this.selectionValidated = false
           this.filesToStore = []
         }
       })
@@ -191,6 +228,7 @@ export default {
 
       return preview
     },
+
     validateSelectionAndMinifyTheFirst() {
       NProgress.start()
 
@@ -207,6 +245,7 @@ export default {
 
       this.selectionValidated = true
     },
+
     resize() {
       const image = this.imagesArray[0]
       const container = document.querySelector('.container')
@@ -214,7 +253,15 @@ export default {
       let canvas = document.createElement('canvas')
       container.appendChild(canvas)
       canvas.id = 'canvas'
-      canvas.max_size = 544
+      let ratio = this.imagesArray[0].width / this.imagesArray[0].height
+      console.log(ratio)
+      if (this.imagesArray[0].width < this.imagesArray[0].height) {
+        canvas.height = 300
+        canvas.width = canvas.height * ratio
+      } else {
+        canvas.width = 300
+        canvas.height = canvas.width / ratio
+      }
       canvas
         .getContext('2d')
         .drawImage(image, 0, 0, canvas.width, canvas.height)
@@ -231,13 +278,15 @@ export default {
         })
       })
     },
+
     storeImages(smallBlob) {
+      this.storeFileOrBlob(smallBlob)
       this.filesToStore.forEach(file => {
         this.storeFileOrBlob(file)
       })
-      this.storeFileOrBlob(smallBlob)
       this.imagesArray = []
     },
+
     storeFileOrBlob(file) {
       const ref = fb.storage.ref()
       const name = +new Date() + '-' + file.name
@@ -255,6 +304,7 @@ export default {
           throw new Error(`Défaut d'autorisation ou d'espace de stockage`)
         })
     },
+
     publishNew() {
       NProgress.start()
       this.connectionTest()
@@ -316,13 +366,16 @@ export default {
         throw new Error(`Il manque la (les) image(s), merci de réessayer`)
       }
     },
+
     clearData() {
       const previews = document.querySelectorAll('.preview')
       const canvas = document.querySelector('#canvas')
       for (let preview of previews) {
         preview.remove()
       }
-      canvas.remove()
+      if (canvas) {
+        canvas.remove()
+      }
       this.publicationType = ''
       this.title = ''
       this.price = ''
@@ -330,10 +383,12 @@ export default {
       this.objectToPublish = {}
       this.imgUploaded = false
       this.selectionValidated = false
+      this.mainImageSelected = false
       this.imageUrlsArray = []
       this.imagesArray = []
       this.filesToStore = []
     },
+
     publicationError(error) {
       NProgress.done()
       const notification = {
@@ -344,6 +399,7 @@ export default {
       }
       this.$store.dispatch('notification/add', notification)
     },
+
     connectionTest() {
       const testRequest = new Request('fb')
       fetch(testRequest)

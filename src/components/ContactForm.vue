@@ -125,7 +125,7 @@ const validateEmail = email => {
 }
 </script>
 
-<style>
+<style scoped>
 .contact-form {
   font-size: 1.5vw;
   text-align: end;
@@ -135,77 +135,5 @@ const validateEmail = email => {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-}
-
-.submitButton {
-  color: red;
-  font-weight: bold;
-}
-
-.btn-twitter {
-  background-color: green;
-  color: white;
-  border-radius: 4px;
-  font-weight: bolder;
-  padding: 10px 15px;
-  text-decoration: none;
-  font-family: sans-serif;
-}
-
-.btn-twitter:hover {
-  opacity: 0.6;
-  cursor: pointer;
-}
-
-.btn-medium {
-  background-color: transparent;
-  color: rgb(150, 150, 150);
-  border-radius: 50px;
-  font-weight: lighter;
-  padding: 10px 15px;
-  text-decoration: none;
-  border: 1px solid rgb(150, 150, 150);
-  opacity: 0.7;
-  font-family: sans-serif;
-}
-
-.btn-medium:hover {
-  opacity: 1;
-}
-
-.btn-treehouse {
-  padding: 10px 15px;
-  color: #45d37f;
-  border: 2px solid;
-  border-radius: 5px;
-  font-family: sans-serif;
-  text-decoration: none;
-  font-weight: 600;
-  opacity: 0.7;
-  letter-spacing: 0.5;
-}
-
-.btn-treehouse:hover {
-  opacity: 1;
-  background-color: #45d37f;
-  border-color: #45d37f;
-  color: white;
-}
-
-.btn-mine {
-  background-color: #283373;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  opacity: 0.6;
-  letter-spacing: 1.5;
-  margin: 0 2vw !important;
-}
-
-.btn-mine:hover {
-  opacity: 1;
-  cursor: pointer;
 }
 </style>
