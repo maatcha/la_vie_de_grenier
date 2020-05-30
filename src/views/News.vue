@@ -16,7 +16,9 @@
       </div>
     </Navbar>
     <div class="container">
-      <h1>Voici nos dernières nouveautés !!!</h1>
+      <h1 v-show="publishedNewsList.length && fullPublication === null">
+        Voici nos dernières nouveautés !!!
+      </h1>
       <div v-if="fullPublication === null" class="mosaic">
         <ProductCard
           class="col-3"
@@ -79,7 +81,9 @@
       </div>
       <hr />
 
-      <h1>Et voici nos offres de déstockage du moment !!!</h1>
+      <h1 v-show="publishedPromotionsList.length">
+        Et voici nos offres de déstockage du moment !!!
+      </h1>
       <div class="mosaic">
         <ProductCard
           class="col-3"

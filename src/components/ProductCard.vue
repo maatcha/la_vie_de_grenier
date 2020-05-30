@@ -3,8 +3,8 @@
     class="product-card"
     @click="seeFullPublication(publishedNewOrPromotion)"
   >
-    <p>{{ publishedNewOrPromotion.createdOn | dateFromNow }}</p>
-    <p>{{ publishedNewOrPromotion.title }}</p>
+    <!-- <p>{{ publishedNewOrPromotion.createdOn | dateFromNow }}</p> -->
+    <h2>{{ publishedNewOrPromotion.title }}</h2>
     <img class="tiny-img" :src="publishedNewOrPromotion.img[0]" />
     <p class="price">PRIX : {{ publishedNewOrPromotion.price }}</p>
     <p>
@@ -35,6 +35,11 @@ export default {
 </script>
 
 <style scoped>
+h2 {
+  text-decoration: none;
+  margin-bottom: 1vw;
+}
+
 .product-card {
   padding: 15px;
   margin: 1vw;

@@ -47,11 +47,13 @@
         <p>Venez vite découvrir les curiosités du moment !</p>
       </div>
 
-      <div class="news">
+      <div class="news" v-show="publishedNewsList.length">
         <h2>Quelques unes de nos nouveautés...</h2>
         <div class="imgWrap">
           <div v-for="publishedNew in publishedNewsList" :key="publishedNew.id">
-            <img class="tiny-img" :src="publishedNew.img[0]" />
+            <router-link :to="{ name: 'news' }">
+              <img class="tiny-img" :src="publishedNew.img[0]" />
+            </router-link>
           </div>
           <!-- JUST FOR RENDERING ADJUSTMENTS -->
           <!-- --------------------------------------------------------------------------------------- -->
@@ -65,14 +67,16 @@
         </div>
       </div>
 
-      <div class="promotions">
+      <div class="promotions" v-show="publishedPromotionsList.length">
         <h2>Un aperçu de nos offres de déstockage...</h2>
         <div class="imgWrap">
           <div
             v-for="publishedPromotion in publishedPromotionsList"
             :key="publishedPromotion.id"
           >
-            <img class="tiny-img" :src="publishedPromotion.img[0]" />
+            <router-link :to="{ name: 'news' }">
+              <img class="tiny-img" :src="publishedPromotion.img[0]" />
+            </router-link>
           </div>
           <!-- JUST FOR RENDERING ADJUSTMENTS -->
           <!-- --------------------------------------------------------------------------------------- -->

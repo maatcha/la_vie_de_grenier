@@ -2,21 +2,24 @@
   <div id="footer">
     <slot>
       <div class="adress">
-        <p>Retrouvez-nous au</p>
+        <p>Retrouvez-nous</p>
+        <p>sur les</p>
+        <p>marchés</p>
+        <p>de brocanteurs...</p>
         <div>
-          <p>23, rue Riquet</p>
-          <p>31000</p>
-          <p>TOULOUSE</p>
+          <!-- <p>au 23 rue Riquet</p> -->
+          <!-- <p>31000 TOULOUSE</p> -->
         </div>
         <div>
-          <p>Tél</p>
-          <p>06.43.85.97.22</p>
+          <p>Et par</p>
+          <p>Téléphone</p>
+          <p>au 06.43.85.97.22</p>
         </div>
       </div>
       <div id="footerRight">
         <div class="message">
-          <p>! Restez informé du</p>
-          <p id="locationSwitch">changement prochain de local</p>
+          <p>! Restez informé de</p>
+          <p id="locationSwitch">l'ouverture prochain d'un nouveau local</p>
           <p>en remplissant ce formulaire !</p>
         </div>
         <ContactForm></ContactForm>

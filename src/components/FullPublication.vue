@@ -1,20 +1,27 @@
 <template>
-  <!-- <transition @before-enter="beforeEnter" @enter="enter" :css="false"> -->
+  <!-- <transition-group @before-enter="beforeEnter" @enter="enter" :css="false"> -->
   <div class="full-publication">
-    <p>{{ publishedNewOrPromotion.createdOn | dateFromNow }}</p>
-    <p>{{ publishedNewOrPromotion.title }}</p>
+    <label for="back-button">
+      <img src="@/assets/back-arrow-hi.png" alt="" />
+    </label>
+    <div>
+      <!-- <p>{{ publishedNewOrPromotion.createdOn | dateFromNow }}</p> -->
+      <h1>{{ publishedNewOrPromotion.title }}</h1>
 
-    {{ publishedNewOrPromotion.description }}
-    <p class="price">PRIX : {{ publishedNewOrPromotion.price }}</p>
-    <button class="book-button" @click="toggleBookingView">
-      RESERVER MAINTENANT
-    </button>
-    <button class="back-button" @click="returnToList">
-      RETOUR A LA LISTE
-    </button>
-    <p v-show="bookingView">
+      <p>{{ publishedNewOrPromotion.description }}</p>
+      <p>Réference article : {{ publishedNewOrPromotion.id }}</p>
+      <p class="price">PRIX : {{ publishedNewOrPromotion.price }}</p>
+      <button class="book-button" @click="toggleBookingView">
+        RESERVER MAINTENANT
+      </button>
+    </div>
+
+    <button id="back-button" @click="returnToList"></button>
+    <p v-show="bookingView" class="booking">
       CET ARTICLE VOUS PLAIT ? RESERVEZ-LE VITE EN APPELANT JULIE AU
-      06.43.85.97.22
+      06.43.85.97.22. <br />
+      En cas de non-réponse, envoyez vos coordonnées ainsi que la référence de
+      l'article par SMS
     </p>
     <div class="mosaic">
       <img
@@ -25,7 +32,7 @@
       />
     </div>
   </div>
-  <!-- </transition> -->
+  <!-- </transition-group> -->
 </template>
 
 <script>
@@ -67,18 +74,25 @@ export default {
 </script>
 
 <style scoped>
+.booking {
+  font-family: cursive, sans-serif;
+  font-weight: bolder;
+  margin: 0vw auto 2vw;
+}
+
 .full-publication {
   max-width: 100%;
   padding: 15px;
   margin: 1vw;
-  border-radius: 20%;
+  border-radius: 10%;
   border: solid black 1px;
   background: rgba(54, 63, 72, 1);
   list-style: none;
   text-align: center;
   color: aliceblue;
-  cursor: pointer;
-  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .photo {
@@ -91,24 +105,23 @@ export default {
 }
 
 .book-button {
-  height: 15vw;
+  height: 3vw;
   width: 15vw;
-  top: 32vh;
-  right: 4vw;
-  position: absolute;
-  z-index: 1;
-  border-radius: 50%;
+  margin-bottom: 2vw;
+  border-radius: 10%;
   background: lightgreen;
+  cursor: pointer;
 }
 
-.back-button {
-  height: 15vw;
-  width: 15vw;
-  top: 32vh;
-  left: 4vw;
-  position: absolute;
-  z-index: 1;
-  border-radius: 50%;
-  background: red;
+#back-button {
+  opacity: 0;
+}
+
+label,
+label img {
+  /* opacity: 1; */
+  width: 5vw;
+  cursor: pointer;
+  margin-left: 1vw;
 }
 </style>
