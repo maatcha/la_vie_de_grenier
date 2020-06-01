@@ -5,7 +5,10 @@
   >
     <!-- <p>{{ publishedNewOrPromotion.createdOn | dateFromNow }}</p> -->
     <h2>{{ publishedNewOrPromotion.title }}</h2>
-    <img class="tiny-img" :src="publishedNewOrPromotion.img[0]" />
+    <img
+      class="tiny-img"
+      :src="publishedNewOrPromotion.img[publishedNewOrPromotion.img.length - 1]"
+    />
     <p class="price">PRIX : {{ publishedNewOrPromotion.price }}</p>
     <p>
       Cliquez pour voir d'autres photos ou réserver !

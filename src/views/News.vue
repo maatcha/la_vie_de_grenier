@@ -79,12 +79,12 @@
           :publishedNewOrPromotion="fullPublication"
         ></FullPublication>
       </div>
-      <hr />
+      <hr v-show="fullPublication === null" />
 
-      <h1 v-show="publishedPromotionsList.length">
+      <h1 v-show="publishedPromotionsList.length && fullPublication === null">
         Et voici nos offres de déstockage du moment !!!
       </h1>
-      <div class="mosaic">
+      <div v-if="fullPublication === null" class="mosaic">
         <ProductCard
           class="col-3"
           v-for="publishedPromotion in publishedPromotionsList"
@@ -94,7 +94,8 @@
         />
       </div>
     </div>
-    <Footer></Footer>
+    <Footer v-if="fullPublication === null" />
+    <Footer v-else><p></p></Footer>
   </div>
 </template>
 
@@ -146,14 +147,5 @@ export default {
 <style scoped>
 h1 {
   font-family: 'Courgette', cursive, sans-serif;
-}
-
-.mosaic {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
 }
 </style>

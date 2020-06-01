@@ -1,6 +1,6 @@
 <template>
   <div class="icon-wrapper">
-    <img class="icon" src="sad-face-emoji.jpg" alt="" />
+    <img class="icon" src="@/assets/sad-face-emoji.jpg" alt="" />
   </div>
 </template>
 

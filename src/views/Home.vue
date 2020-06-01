@@ -20,7 +20,7 @@
       >
         <img
           id="nailAndStringImg"
-          src="nail_and_string.png"
+          src="@/assets/nail_and_string.png"
           :key="this.nailAndStringImgId"
         />
         <div
@@ -30,7 +30,7 @@
         >
           <img
             id="montageInFrameImg"
-            src="montage_in_frame_quart.png"
+            src="@/assets/montage_in_frame_quart.png"
             alt=""
             :key="this.montageInFrameImgId"
           />

@@ -108,6 +108,26 @@ h2 {
   text-align: center;
 }
 
+.clickableText {
+  padding-bottom: 2vw;
+  margin-left: 3vw;
+}
+
+.clickableText:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  color: red;
+}
+
+.mosaic {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 #app {
   height: 100%;
   width: 100%;
