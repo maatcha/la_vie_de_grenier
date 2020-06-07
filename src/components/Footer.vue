@@ -6,6 +6,7 @@
         <p>sur les</p>
         <p>marchés</p>
         <p>de brocanteurs...</p>
+        <br />
         <div>
           <!-- <p>au 23 rue Riquet</p> -->
           <!-- <p>31000 TOULOUSE</p> -->
@@ -19,7 +20,7 @@
       <div id="footerRight">
         <div class="message">
           <p>! Restez informé de</p>
-          <p id="locationSwitch">l'ouverture prochain d'un nouveau local</p>
+          <p id="locationSwitch">l'ouverture prochaine d'un nouveau local</p>
           <p>en remplissant ce formulaire !</p>
         </div>
         <ContactForm></ContactForm>
@@ -61,7 +62,7 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin: 2vw 0;
+  margin: 1vw 0;
   border: 1px solid black;
   padding: 2vw;
   border-radius: 50px;

@@ -1,11 +1,9 @@
 <template>
-  <!-- <transition-group @before-enter="beforeEnter" @enter="enter" :css="false"> -->
   <div class="full-publication">
     <label for="back-button">
       <img src="@/assets/back-arrow-hi.png" alt="" />
     </label>
     <div>
-      <!-- <p>{{ publishedNewOrPromotion.createdOn | dateFromNow }}</p> -->
       <h1>{{ publishedNewOrPromotion.title }}</h1>
 
       <p>{{ publishedNewOrPromotion.description }}</p>
@@ -17,7 +15,7 @@
     </div>
 
     <button id="back-button" @click="returnToList"></button>
-    <p v-show="bookingView" class="booking">
+    <p v-show="showBooking" class="booking">
       CET ARTICLE VOUS PLAIT ? RESERVEZ-LE VITE EN APPELANT JULIE AU
       06.43.85.97.22. <br />
       En cas de non-réponse, envoyez vos coordonnées ainsi que la référence de
@@ -32,11 +30,9 @@
       />
     </div>
   </div>
-  <!-- </transition-group> -->
 </template>
 
 <script>
-// import gsap from 'gsap'
 export default {
   props: {
     publishedNewOrPromotion: {
@@ -46,7 +42,7 @@ export default {
   },
   data() {
     return {
-      bookingView: false
+      showBooking: false
     }
   },
   methods: {
@@ -54,22 +50,9 @@ export default {
       this.$emit('return-to-list')
     },
     toggleBookingView() {
-      this.bookingView = !this.bookingView
+      this.showBooking = !this.showBooking
     }
   }
-  // ,
-  // beforeEnter(el) {
-  //   el.style.transform = 'scale(0,0)'
-  // },
-  // enter(el, done) {
-  //   gsap.to(el, {
-  //     duration: 10,
-  //     opacity: 1,
-  //     scale: 1,
-  //     ease: 'power1',
-  //     onComplete: done
-  //   })
-  // }
 }
 </script>
 
@@ -119,7 +102,6 @@ export default {
 
 label,
 label img {
-  /* opacity: 1; */
   width: 5vw;
   cursor: pointer;
   margin-left: 1vw;

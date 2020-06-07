@@ -20,7 +20,14 @@
         >
           Cacher la liste des produits publiés
         </p>
-        <div class="mosaïc"></div>
+        <div class="mosaïc">
+          <ProductCard
+            class="col-3 product-card"
+            v-for="publishedNew in publishedNewsList"
+            :key="publishedNew.id"
+            :publishedNewOrPromotion="publishedNew"
+          />
+        </div>
       </div>
     </transition>
   </div>

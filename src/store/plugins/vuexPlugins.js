@@ -10,9 +10,9 @@ export function customerAndNewsSnapshotAutoRefresh(store) {
             let customerArray = []
 
             querySnapshot.forEach(customer => {
-              let email = customer.data()
-              email.id = customer.id
-              customerArray.push(email)
+              let data = customer.data()
+              data.id = customer.id
+              customerArray.push(data)
             })
 
             store.dispatch('updateCustomerList', customerArray)
@@ -27,7 +27,7 @@ export function customerAndNewsSnapshotAutoRefresh(store) {
 
         querySnapshot.forEach(publishedNew => {
           let pNew = publishedNew.data()
-          pNew.id = pNew.createdOn.seconds + '-' + pNew.createdOn.nanoseconds
+          pNew.id = pNew.createdOn.seconds
           if (pNew.publicationType === 'nouveauté')
             publishedNewsArray.push(pNew)
           else if (pNew.publicationType === 'promotion')

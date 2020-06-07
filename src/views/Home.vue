@@ -40,11 +40,20 @@
       <div id="the-shop">
         <h2>La Boutique</h2>
         <p>
-          Julie vous ouvre la Boutique du Mardi au Vendredi de 10h00 à 19h00,
+          Nous recherchons actuellement un nouveau local pour vous accueillir.
         </p>
-        <p>ainsi que le Samedi et le Dimanche matins,</p>
-        <p>au 23, rue Riquet 31000 TOULOUSE.</p>
-        <p>Venez vite découvrir les curiosités du moment !</p>
+        <p>Afin que nous puissions vous communiquer l'adresse de</p>
+        <p>
+          la nouvelle boutique, merci de renseigner vos coordonnées
+          <a class="link" href="#footer">juste ici</a>.
+        </p>
+        <p>En attendant, tous nos produits restent disponibles !!!</p>
+        <p>
+          Découvrez toutes nos nouveautés et promotions
+          <router-link class="orange-link" :to="{ name: 'news' }">
+            sur cette page</router-link
+          >.
+        </p>
       </div>
 
       <div class="news" v-show="publishedNewsList.length">
@@ -52,18 +61,12 @@
         <div class="imgWrap">
           <div v-for="publishedNew in publishedNewsList" :key="publishedNew.id">
             <router-link :to="{ name: 'news' }">
-              <img class="tiny-img" :src="publishedNew.img[0]" />
+              <img
+                class="tiny-img"
+                :src="publishedNew.img[publishedNew.img.length - 1]"
+              />
             </router-link>
           </div>
-          <!-- JUST FOR RENDERING ADJUSTMENTS -->
-          <!-- --------------------------------------------------------------------------------------- -->
-          <div v-for="publishedNew in publishedNewsList" :key="publishedNew.id">
-            <img class="tiny-img" :src="publishedNew.img[0]" />
-          </div>
-          <div v-for="publishedNew in publishedNewsList" :key="publishedNew.id">
-            <img class="tiny-img" :src="publishedNew.img[0]" />
-          </div>
-          <!-- --------------------------------------------------------------------------------------- -->
         </div>
       </div>
 
@@ -75,31 +78,12 @@
             :key="publishedPromotion.id"
           >
             <router-link :to="{ name: 'news' }">
-              <img class="tiny-img" :src="publishedPromotion.img[0]" />
+              <img
+                class="tiny-img"
+                :src="publishedPromotion.img[publishedPromotion.img.length - 1]"
+              />
             </router-link>
           </div>
-          <!-- JUST FOR RENDERING ADJUSTMENTS -->
-          <!-- --------------------------------------------------------------------------------------- -->
-          <div
-            v-for="publishedPromotion in publishedPromotionsList"
-            :key="publishedPromotion.id"
-          >
-            <img class="tiny-img" :src="publishedPromotion.img[0]" />
-          </div>
-          <div
-            v-for="publishedPromotion in publishedPromotionsList"
-            :key="publishedPromotion.id"
-          >
-            <img class="tiny-img" :src="publishedPromotion.img[0]" />
-          </div>
-          <div
-            v-for="publishedPromotion in publishedPromotionsList"
-            :key="publishedPromotion.id"
-          >
-            <img class="tiny-img" :src="publishedPromotion.img[0]" />
-          </div>
-
-          <!-- --------------------------------------------------------------------------------------- -->
         </div>
       </div>
     </div>
@@ -203,6 +187,10 @@ export default {
 /* ----TRANSITIONS----- */
 .montage-in-frame > img {
   width: 100%;
+}
+
+.orange-link {
+  color: rgb(245, 117, 12);
 }
 
 .title h1 {

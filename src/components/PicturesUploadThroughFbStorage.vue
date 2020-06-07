@@ -254,8 +254,7 @@ export default {
       container.appendChild(canvas)
       canvas.id = 'canvas'
       let ratio = this.imagesArray[0].width / this.imagesArray[0].height
-      console.log(ratio)
-      if (this.imagesArray[0].width < this.imagesArray[0].height) {
+      if (this.imagesArray[0].width <= this.imagesArray[0].height) {
         canvas.height = 300
         canvas.width = canvas.height * ratio
       } else {

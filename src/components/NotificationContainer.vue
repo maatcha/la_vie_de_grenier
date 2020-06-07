@@ -24,7 +24,7 @@ export default {
 .notification-container {
   margin-left: 50vw;
   position: fixed;
-  bottom: 0;
-  right: 0;
+  bottom: 1vw;
+  right: 1vw;
 }
 </style>

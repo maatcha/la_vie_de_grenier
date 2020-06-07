@@ -28,8 +28,8 @@
           <li class="customerList">
             <p>Souscription</p>
             <p>E-mail</p>
-            <p>Prénom</p>
-            <p>Nom</p>
+            <p>Nom et Prénom</p>
+            <p>Téléphone</p>
           </li>
         </ul>
         <hr />
@@ -37,11 +37,17 @@
           <li v-if="showCustomerList" class="customerList">
             <p>{{ customer.createdOn | dateFromNow }}</p>
             <p>{{ customer.email }}</p>
-            <p v-if="customer.firstName">
-              {{ customer.firstName }}
+            <p v-if="customer.name">
+              {{ customer.name }}
             </p>
-            <p v-if="customer.lastName">
-              {{ customer.lastName }}
+            <p v-else>
+              non renseigné
+            </p>
+            <p v-if="customer.phoneNumber">
+              {{ customer.phoneNumber }}
+            </p>
+            <p v-else>
+              non renseigné
             </p>
           </li>
         </ul>

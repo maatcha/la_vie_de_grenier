@@ -1,10 +1,12 @@
 <template>
   <div
     class="product-card"
-    @click="seeFullPublication(publishedNewOrPromotion)"
+    @click="showFullPublication(publishedNewOrPromotion)"
   >
     <!-- <p>{{ publishedNewOrPromotion.createdOn | dateFromNow }}</p> -->
-    <h2>{{ publishedNewOrPromotion.title }}</h2>
+    <h2>
+      {{ publishedNewOrPromotion.title }}
+    </h2>
     <img
       class="tiny-img"
       :src="publishedNewOrPromotion.img[publishedNewOrPromotion.img.length - 1]"
@@ -30,8 +32,8 @@ export default {
     }
   },
   methods: {
-    seeFullPublication(productCard) {
-      this.$emit('set-full-publication', productCard)
+    showFullPublication(productCard) {
+      this.$emit('show-full-publication', productCard)
     }
   }
 }

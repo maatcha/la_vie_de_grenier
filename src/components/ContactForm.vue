@@ -15,19 +15,19 @@
 
       <div v-else>
         <p>
-          <label for="firstName">Prénom:</label>
-          <input id="firstName" size="10" v-model="firstName" />
+          <label for="name">Nom, Prénom: (facultatif)</label>
+          <input id="name" size="22" v-model="name" />
         </p>
 
         <p>
-          <label for="lastName">Nom de famille:</label>
-          <input id="lastName" size="10" v-model="lastName" />
+          <label for="phoneNumber">Numéro de téléphone: (facultatif)</label>
+          <input id="phoneNumber" size="10" v-model="phoneNumber" />
         </p>
       </div>
 
       <p>
         <label for="email">e-mail:</label>
-        <input id="email" size="10" v-model="email" autocomplete="username" />
+        <input id="email" size="22" v-model="email" autocomplete="username" />
       </p>
 
       <p>
@@ -38,7 +38,7 @@
         >
           Me connecter
         </button>
-        <button v-else class="btn-twitter" @click="saveCustomerEmail">
+        <button v-else class="btn-twitter" @click="saveCustomerInfos">
           Rester informé(e)
         </button>
       </p>
@@ -49,32 +49,40 @@
 <script>
 import * as fb from '@/firebaseConfig.js'
 import NProgress from 'nprogress'
+import store from '@/store/index.js'
 export default {
   data() {
     return {
-      firstName: null,
-      lastName: null,
+      name: null,
+      phoneNumber: null,
       email: null,
       password: null
     }
   },
   methods: {
-    saveCustomerEmail() {
-      let firstName = this.firstName,
-        lastName = this.lastName,
+    saveCustomerInfos() {
+      let name = this.name,
+        phoneNumber = this.phoneNumber,
         email = this.email
       if (validateEmail(email)) {
+        NProgress.start()
         fb.customerCollection
           .add({
             createdOn: new Date(),
-            firstName: firstName,
-            lastName: lastName,
+            name: name,
+            phoneNumber: phoneNumber,
             email: email
           })
           .then(() => {
-            this.firstName = null
-            this.lastName = null
+            this.name = null
+            this.phoneNumber = null
             this.email = null
+            NProgress.done()
+            const notification = {
+              type: 'success',
+              message: `Vos informations ont bien été enregistrées, merci !`
+            }
+            this.$store.dispatch('notification/add', notification)
           })
           .catch(error => {
             NProgress.done()
@@ -120,7 +128,11 @@ const validateEmail = email => {
   if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
     return true
   }
-  alert("S'il vous plaît, entrez une adresse e-mail valide")
+  const notification = {
+    type: 'error',
+    message: `S'il vous plaît, entrez une adresse e-mail valide`
+  }
+  store.dispatch('notification/add', notification)
   return false
 }
 </script>
