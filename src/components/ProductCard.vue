@@ -15,6 +15,7 @@
     <p>
       Cliquez pour voir d'autres photos ou réserver !
     </p>
+    <slot></slot>
   </div>
 </template>
 

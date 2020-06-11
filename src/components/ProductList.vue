@@ -20,21 +20,23 @@
         >
           Cacher la liste des produits publiés
         </p>
-        <div class="mosaïc">
-          <ProductCard
-            class="col-3 product-card"
-            v-for="publishedNew in publishedNewsList"
-            :key="publishedNew.id"
-            :publishedNewOrPromotion="publishedNew"
-          />
-        </div>
+
+        <NewsAndPromotionsTabs>
+          <button>Modifier</button>
+        </NewsAndPromotionsTabs>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
+// import ProductCard from '@/components/ProductCard'
+import NewsAndPromotionsTabs from '@/components/NewsAndPromotionsTabs'
 export default {
+  components: {
+    // ProductCard
+    NewsAndPromotionsTabs
+  },
   props: {
     publishedNewsList: {
       type: Array,
