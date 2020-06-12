@@ -32,17 +32,8 @@
           :key="publishedNew.id"
           :publishedNewOrPromotion="publishedNew"
           @show-full-publication="showFullPublication"
-        >
-          <button v-if="admin" slot="modify" @click="modifyPublication">
-            Modifier
-          </button>
-          <button
-            slot="fullPublication"
-            @click="showFullPublication(publishedNew)"
-          >
-            Cliquez ICI pour voir d'autres photos ou réserver !
-          </button></ProductCard
-        >
+          ><slot name="intoCard"></slot
+        ></ProductCard>
       </div>
     </div>
 
@@ -57,17 +48,8 @@
           :key="publishedPromotion.id"
           :publishedNewOrPromotion="publishedPromotion"
           @show-full-publication="showFullPublication"
-        >
-          <button v-if="admin" slot="modify" @click="modifyPublication">
-            Modifier
-          </button>
-          <button
-            slot="fullPublication"
-            @click="showFullPublication(publishedPromotion)"
-          >
-            Cliquez ICI pour voir d'autres photos ou réserver !
-          </button>
-        </ProductCard>
+          ><slot name="intoCard"></slot
+        ></ProductCard>
       </div>
     </div>
     <div v-else>
@@ -91,12 +73,6 @@ export default {
     ProductCard,
     FullPublication
   },
-  props: {
-    admin: {
-      type: Boolean,
-      required: false
-    }
-  },
   data() {
     return {
       fullPublication: null,
@@ -119,9 +95,6 @@ export default {
     returnToList() {
       this.fullPublication = null
       this.$emit('return-to-list')
-    },
-    modifyPublication() {
-      this.$emit('modify-publication')
     }
   },
   mounted() {

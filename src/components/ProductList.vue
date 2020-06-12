@@ -20,11 +20,13 @@
         >
           Cacher la liste des produits publiés
         </p>
-
+        <div v-if="publicationToModify !== null">
+          <div>Price : {{ publicationToModify.price }}</div>
+        </div>
         <NewsAndPromotionsTabs
-          :admin="true"
-          :modify-publication="modifyPublication"
-        ></NewsAndPromotionsTabs>
+          @show-full-publication="showPublicationAndAllowToModify"
+        >
+        </NewsAndPromotionsTabs>
       </div>
     </transition>
   </div>
@@ -48,15 +50,16 @@ export default {
   },
   data() {
     return {
-      showProductList: false
+      showProductList: false,
+      publicationToModify: null
     }
   },
   methods: {
     toggleProductList() {
       this.showProductList = !this.showProductList
     },
-    modifyPublication() {
-      console.log('ok')
+    showPublicationAndAllowToModify(publicationToModify) {
+      this.publicationToModify = publicationToModify
     },
     beforeListEnter(el) {
       this.$emit('before-list-enter', el)
