@@ -21,20 +21,19 @@
           Cacher la liste des produits publiés
         </p>
 
-        <NewsAndPromotionsTabs>
-          <button>Modifier</button>
-        </NewsAndPromotionsTabs>
+        <NewsAndPromotionsTabs
+          :admin="true"
+          :modify-publication="modifyPublication"
+        ></NewsAndPromotionsTabs>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
-// import ProductCard from '@/components/ProductCard'
 import NewsAndPromotionsTabs from '@/components/NewsAndPromotionsTabs'
 export default {
   components: {
-    // ProductCard
     NewsAndPromotionsTabs
   },
   props: {
@@ -56,6 +55,9 @@ export default {
     toggleProductList() {
       this.showProductList = !this.showProductList
     },
+    modifyPublication() {
+      console.log('ok')
+    },
     beforeListEnter(el) {
       this.$emit('before-list-enter', el)
     },
@@ -73,23 +75,7 @@ export default {
 </script>
 
 <style scoped>
-/* ul {
-  margin: 0;
-  padding: 0 1vw;
-} */
-
 p {
   padding-left: 1vw;
 }
-
-/* .customerList {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.customerList > p {
-  margin: 0;
-  padding: 0;
-} */
 </style>

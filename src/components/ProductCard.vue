@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="product-card"
-    @click="showFullPublication(publishedNewOrPromotion)"
-  >
+  <div class="product-card">
     <!-- <p>{{ publishedNewOrPromotion.createdOn | dateFromNow }}</p> -->
     <h2>
       {{ publishedNewOrPromotion.title }}
@@ -12,10 +9,8 @@
       :src="publishedNewOrPromotion.img[publishedNewOrPromotion.img.length - 1]"
     />
     <p class="price">PRIX : {{ publishedNewOrPromotion.price }}</p>
-    <p>
-      Cliquez pour voir d'autres photos ou réserver !
-    </p>
-    <slot></slot>
+    <slot name="fullPublication"></slot>
+    <slot name="modify"></slot>
   </div>
 </template>
 
@@ -55,7 +50,6 @@ h2 {
   list-style: none;
   text-align: center;
   color: aliceblue;
-  cursor: pointer;
 }
 
 .tiny-img {
@@ -66,5 +60,9 @@ h2 {
 .price {
   font-weight: bolder;
   letter-spacing: 0.2vw;
+}
+
+.fullPublication-button:hover {
+  cursor: pointer;
 }
 </style>
