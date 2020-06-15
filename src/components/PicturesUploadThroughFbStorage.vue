@@ -86,6 +86,8 @@
       </p>
 
       <button
+        type="submit"
+        :disabled="!this.title || !this.price || !this.publicationType"
         :class="{
           disabledButton: !this.title || !this.price || !this.publicationType,
           news: this.publicationType === 'nouveauté',
@@ -443,11 +445,6 @@ p {
   color: black;
   font-weight: bold;
   font-size: 14px;
-}
-
-.disabledButton {
-  background: grey;
-  opacity: 0.3;
 }
 
 .publisher-form {

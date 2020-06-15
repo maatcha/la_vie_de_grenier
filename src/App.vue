@@ -141,6 +141,16 @@ h2 {
   font-weight: bold;
 }
 
+.disabledButton {
+  background: grey !important;
+  cursor: none !important;
+  opacity: 0.3 !important;
+}
+
+.disabledButton:hover {
+  opacity: 0.3 !important;
+}
+
 .btn-twitter {
   background-color: green;
   color: white;
