@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <NotificationContainer />
     <div class="previews-container"></div>
 
     <label
@@ -60,11 +59,24 @@
       </p>
 
       <p>
-        <label for="price">Prix :</label>
+        <label for="price">Prix de vente :</label>
         <input
           id="price"
           size="10"
           v-model="price"
+          :class="{
+            news: this.publicationType === 'nouveauté',
+            promotion: this.publicationType === 'promotion'
+          }"
+        />
+      </p>
+
+      <p v-if="this.publicationType === 'promotion'">
+        <label for="oldPrice">Ancien Prix :</label>
+        <input
+          id="oldPrice"
+          size="10"
+          v-model="oldPrice"
           :class="{
             news: this.publicationType === 'nouveauté',
             promotion: this.publicationType === 'promotion'
@@ -111,7 +123,7 @@
     </button>
     <button
       v-show="imgUploaded && !selectionValidated"
-      class="submitButton"
+      class="submit-button"
       @click="clearData"
     >
       Annuler la publication
@@ -120,13 +132,11 @@
 </template>
 
 <script>
+import mixin from '@/mixins/mixin'
 import * as fb from '@/firebaseConfig.js'
 import NProgress from 'nprogress'
-import NotificationContainer from '@/components/NotificationContainer.vue'
 export default {
-  components: {
-    NotificationContainer
-  },
+  mixins: [mixin],
   data() {
     return {
       imgUploaded: false,
@@ -135,6 +145,7 @@ export default {
       publicationType: '',
       title: '',
       price: null,
+      oldPrice: null,
       description: '',
       objectToPublish: {},
       imageUrlsArray: [],
@@ -315,6 +326,7 @@ export default {
           publicationTypeToPublish: this.publicationType,
           titleToPublish: this.title,
           priceToPublish: this.price,
+          oldPriceToPublish: this.oldPrice,
           descriptionToPublish: this.description
         }
         if (
@@ -343,6 +355,7 @@ export default {
             createdOn: new Date(),
             title: this.objectToPublish.titleToPublish,
             price: this.objectToPublish.priceToPublish,
+            oldPrice: this.objectToPublish.oldPriceToPublish,
             description: this.objectToPublish.descriptionToPublish,
             publicationType: this.objectToPublish.publicationTypeToPublish
           })
@@ -380,6 +393,7 @@ export default {
       this.publicationType = ''
       this.title = ''
       this.price = ''
+      this.oldPrice = ''
       this.description = ''
       this.objectToPublish = {}
       this.imgUploaded = false
@@ -388,28 +402,6 @@ export default {
       this.imageUrlsArray = []
       this.imagesArray = []
       this.filesToStore = []
-    },
-
-    publicationError(error) {
-      NProgress.done()
-      const notification = {
-        type: 'error',
-        message:
-          `Il y a eu un problème durant la publication de votre ${this.publicationType} : ` +
-          error.message
-      }
-      this.$store.dispatch('notification/add', notification)
-    },
-
-    connectionTest() {
-      const testRequest = new Request('fb')
-      fetch(testRequest)
-        .catch(() => {
-          throw new Error(`Impossible d'établir la connexion`)
-        })
-        .catch(error => {
-          this.publicationError(error)
-        })
     }
   }
 }
@@ -479,6 +471,12 @@ p {
 }
 
 #price {
+  border-radius: 3px;
+  width: 30%;
+  margin: 0 1vw;
+}
+
+#oldPrice {
   border-radius: 3px;
   width: 30%;
   margin: 0 1vw;

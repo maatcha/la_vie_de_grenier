@@ -7,7 +7,7 @@
       <h1>{{ publishedNewOrPromotion.title }}</h1>
 
       <p>{{ publishedNewOrPromotion.description }}</p>
-      <p>Réference article : {{ publishedNewOrPromotion.id }}</p>
+      <p>Réference article : {{ publishedNewOrPromotion.ref }}</p>
       <p class="price">PRIX : {{ publishedNewOrPromotion.price }}</p>
       <button class="book-button" @click="toggleBookingView">
         RESERVER MAINTENANT

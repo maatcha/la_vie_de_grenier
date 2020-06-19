@@ -27,7 +27,8 @@ export function customerAndNewsSnapshotAutoRefresh(store) {
 
         querySnapshot.forEach(publishedNew => {
           let pNew = publishedNew.data()
-          pNew.id = pNew.createdOn.seconds
+          pNew.id = publishedNew.id
+          pNew.ref = pNew.createdOn.seconds
           if (pNew.publicationType === 'nouveauté')
             publishedNewsArray.push(pNew)
           else if (pNew.publicationType === 'promotion')

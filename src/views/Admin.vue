@@ -12,6 +12,7 @@
       >
     </Navbar>
     <div class="container">
+      <NotificationContainer />
       <PicturesUploadThroughFbStorage />
       <CustomerList
         :customerList="customerList"
@@ -29,14 +30,15 @@
 
 <script>
 import * as fb from '@/firebaseConfig.js'
-import Navbar from '@/components/Navbar.vue'
-import Footer from '@/components/Footer.vue'
-import PicturesUploadThroughFbStorage from '@/components/PicturesUploadThroughFbStorage.vue'
-import CustomerList from '@/components/CustomerList.vue'
 import { mapState } from 'vuex'
 import router from '@/router/index'
 import store from '@/store/index'
 import Velocity from 'velocity-animate'
+import Navbar from '@/components/Navbar.vue'
+import Footer from '@/components/Footer.vue'
+import NotificationContainer from '@/components/NotificationContainer.vue'
+import CustomerList from '@/components/CustomerList.vue'
+import PicturesUploadThroughFbStorage from '@/components/PicturesUploadThroughFbStorage.vue'
 
 function signOutAndClearUserData() {
   fb.auth
@@ -59,8 +61,9 @@ export default {
   components: {
     Navbar,
     Footer,
-    PicturesUploadThroughFbStorage,
-    CustomerList
+    NotificationContainer,
+    CustomerList,
+    PicturesUploadThroughFbStorage
   },
   methods: {
     logout() {

@@ -136,7 +136,7 @@ h2 {
 
 /* -----------BUTTONS--------------------------------------------- */
 
-.submitButton {
+.submit-button {
   color: red;
   font-weight: bold;
 }
