@@ -248,5 +248,17 @@ export default {
   .title {
     padding: 3vw;
   }
+
+  #the-shop > h2 {
+    font-size: 5vw;
+  }
+
+  .news > h2 {
+    font-size: 4vw;
+  }
+
+  .promotions > h2 {
+    font-size: 4vw;
+  }
 }
 </style>

@@ -153,7 +153,34 @@ label {
   justify-content: space-between;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 382px) {
+  .btn-twitter {
+    padding: 2vw 3vw;
+    width: 100%;
+  }
+
+  #phoneNumber {
+    width: 200%;
+    height: 70%;
+  }
+
+  #name {
+    height: 70%;
+    width: 110%;
+  }
+
+  #email {
+    height: 70%;
+    width: 75%;
+  }
+
+  label {
+    font-size: 2vw;
+    margin-right: 1vw;
+  }
+}
+
+@media (min-width: 382px) and (max-width: 500px) {
   .btn-twitter {
     padding: 2vw 3vw;
     width: 100%;
