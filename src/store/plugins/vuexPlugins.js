@@ -1,4 +1,4 @@
-import * as fb from '../../firebaseConfig'
+import * as fb from '@/firebaseConfig.js'
 
 export function customerAndNewsSnapshotAutoRefresh(store) {
   fb.auth.onAuthStateChanged(user => {
