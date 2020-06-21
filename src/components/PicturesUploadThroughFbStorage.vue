@@ -310,7 +310,6 @@ export default {
         .then(snapshot => {
           let imageUrl = snapshot.ref.getDownloadURL()
           this.imageUrlsArray.push(imageUrl)
-          console.log('stored')
         })
         .catch(() => {
           throw new Error(`Défaut d'autorisation ou d'espace de stockage`)

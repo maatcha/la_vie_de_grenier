@@ -96,7 +96,6 @@ import { mapState } from 'vuex'
 import Footer from '@/components/Footer.vue'
 import Navbar from '@/components/Navbar.vue'
 import NotificationContainer from '@/components/NotificationContainer.vue'
-import firebase from 'firebase/app'
 import Velocity from 'velocity-animate'
 
 export default {
@@ -114,7 +113,6 @@ export default {
     NotificationContainer
   },
   mounted() {
-    console.log(firebase.auth().currentUser)
     setTimeout(() => {
       this.isOpen = true
     }, 400)
