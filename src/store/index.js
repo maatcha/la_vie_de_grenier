@@ -45,7 +45,6 @@ export default new Vuex.Store({
         .get()
         .then(res => {
           commit('SET_USER_PROFILE', res.data())
-          console.log(state.userProfile)
         })
         .catch(error => {
           const notification = {
