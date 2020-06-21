@@ -11,7 +11,28 @@
       class="tiny-img"
       :src="publishedNewOrPromotion.img[publishedNewOrPromotion.img.length - 1]"
     />
-    <p class="price">PRIX : {{ publishedNewOrPromotion.price }}</p>
+    <p
+      v-show="publishedNewOrPromotion.publicationType === 'nouveauté'"
+      class="price"
+    >
+      PRIX : {{ publishedNewOrPromotion.price }} €
+    </p>
+    <p
+      v-show="
+        publishedNewOrPromotion.publicationType === 'promotion' &&
+          publishedNewOrPromotion.oldPrice
+      "
+      class="price"
+    >
+      PRIX :
+      <span class="oldPrice">{{ publishedNewOrPromotion.oldPrice }} €</span>
+    </p>
+    <p
+      v-show="publishedNewOrPromotion.publicationType === 'promotion'"
+      class="price"
+    >
+      PRIX SOLDE : {{ publishedNewOrPromotion.price }} €
+    </p>
     <p>
       Cliquez pour voir d'autres photos ou réserver !
     </p>
@@ -47,7 +68,7 @@ h2 {
 }
 
 .product-card {
-  padding: 15px;
+  padding: 1.5vw;
   margin: 1vw;
   border-radius: 20%;
   border: solid black 1px;
@@ -66,5 +87,40 @@ h2 {
 .price {
   font-weight: bolder;
   letter-spacing: 0.2vw;
+}
+
+.oldPrice {
+  text-decoration: line-through red wavy;
+}
+
+@media (max-width: 500px) {
+  h2 {
+    font-size: 5vw;
+  }
+
+  p {
+    font-size: 4vw;
+  }
+
+  .product-card {
+    padding: 5vw;
+    margin: 3vw;
+  }
+}
+
+@media (min-width: 500px) and (max-width: 900px) {
+  h2 {
+    font-size: 3vw;
+  }
+
+  p {
+    font-size: 2vw;
+  }
+
+  .product-card {
+    padding: 5vw;
+    padding-right: 6vw;
+    margin: 3vw;
+  }
 }
 </style>

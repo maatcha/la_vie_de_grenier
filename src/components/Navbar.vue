@@ -48,4 +48,13 @@ export default {}
   color: rgba(226, 231, 235, 1);
   margin: 0 1vw;
 }
+
+@media (max-width: 500px) {
+  .navbar {
+    display: flex;
+    font-weight: bold;
+    height: 4vh;
+    padding: 1.5vw 2vw 2vw 2vw;
+  }
+}
 </style>

@@ -2,10 +2,12 @@
   <div id="footer">
     <slot>
       <div class="adress">
-        <p>Retrouvez-nous</p>
+        <p>Retrouvez-</p>
+        <p>nous</p>
         <p>sur les</p>
         <p>marchés</p>
-        <p>de brocanteurs...</p>
+        <p>de</p>
+        <p>brocanteurs...</p>
         <br />
         <div>
           <!-- <p>au 23 rue Riquet</p> -->
@@ -14,7 +16,8 @@
         <div>
           <p>Et par</p>
           <p>Téléphone</p>
-          <p>au 06.43.85.97.22</p>
+          <p>au</p>
+          <p>06.43.85.97.22</p>
         </div>
       </div>
       <div id="footerRight">
@@ -96,8 +99,24 @@ p {
 }
 
 @media (max-width: 500px) {
+  p {
+    font-size: 2.5vw;
+    line-height: 2vw;
+  }
+
+  .adress {
+    padding-left: 4vw;
+    margin-right: 1vw;
+  }
+
   #footerRight {
-    padding: 2vw 2vw 2vw 6vw;
+    padding-left: 6vw;
+    width: 60%;
+  }
+
+  #locationSwitch {
+    font-size: 2.5vw;
+    line-height: 3.5vw;
   }
 }
 </style>

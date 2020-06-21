@@ -489,7 +489,15 @@ p {
   margin: 0 1vw;
 }
 
-#input {
+#main-input {
   display: none;
+}
+
+@media (max-width: 500px) {
+  .btn-treehouse {
+    cursor: pointer;
+    padding: 1.5px 3px;
+    font-size: 3.5vw;
+  }
 }
 </style>

@@ -239,4 +239,14 @@ export default {
 #the-shop > p {
   text-align: center;
 }
+
+@media (max-width: 500px) {
+  h1 {
+    font-size: 7vw !important;
+  }
+
+  .title {
+    padding: 3vw;
+  }
+}
 </style>

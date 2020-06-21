@@ -14,6 +14,14 @@
     <div class="container">
       <NotificationContainer />
       <PicturesUploadThroughFbStorage />
+      <ProductList
+        :publishedNewsList="publishedNewsList"
+        :publishedPromotionsList="publishedPromotionsList"
+        @before-list-enter="beforeListEnter"
+        @list-enter="listEnter"
+        @before-list-leave="beforeListLeave"
+        @list-leave="listLeave"
+      />
       <CustomerList
         :customerList="customerList"
         @before-list-enter="beforeListEnter"
@@ -30,6 +38,7 @@
 
 <script>
 import * as fb from '@/firebaseConfig.js'
+import ProductList from '@/components/ProductList.vue'
 import { mapState } from 'vuex'
 import router from '@/router/index'
 import store from '@/store/index'
@@ -63,6 +72,7 @@ export default {
     Footer,
     NotificationContainer,
     CustomerList,
+    ProductList,
     PicturesUploadThroughFbStorage
   },
   methods: {
@@ -76,7 +86,7 @@ export default {
     listEnter(el, done) {
       Velocity(
         el,
-        { height: '15em' },
+        { height: '40em' },
         { duration: 500, easing: [60, 10], complete: done }
       )
     },

@@ -26,16 +26,22 @@
           @submit.prevent
           id="publication-updater-form"
         >
-          <div>
+          <div class="category">
             <label for="newPublicationType">
               <button
                 v-if="newPublicationType"
                 type="button"
+                class="dont-modify"
                 @click="clearNewPublicationType"
               >
                 Ne plus modifier
               </button>
-              <button v-else type="button" @click="editPublicationType">
+              <button
+                v-else
+                type="button"
+                class="modify"
+                @click="editPublicationType"
+              >
                 Modifier
               </button>
             </label>
@@ -55,12 +61,19 @@
             </select>
           </div>
 
-          <div>
+          <div class="category">
             <label for="newTitle">
-              <button v-if="newTitle" type="button" @click="clearNewTitle">
+              <button
+                v-if="newTitle"
+                type="button"
+                class="dont-modify"
+                @click="clearNewTitle"
+              >
                 Ne plus modifier
               </button>
-              <button v-else type="button" @click="editTitle">Modifier</button>
+              <button v-else type="button" class="modify" @click="editTitle">
+                Modifier
+              </button>
             </label>
             <div>Titre actuel : {{ publicationToModify.title }}</div>
             <p v-if="newTitle">Nouveau Titre :</p>
@@ -76,12 +89,19 @@
             />
           </div>
 
-          <div>
+          <div class="category">
             <label for="newPrice">
-              <button v-if="newPrice" type="button" @click="clearNewPrice">
+              <button
+                v-if="newPrice"
+                type="button"
+                class="dont-modify"
+                @click="clearNewPrice"
+              >
                 Ne plus modifier
               </button>
-              <button v-else type="button" @click="editPrice">Modifier</button>
+              <button v-else type="button" class="modify" @click="editPrice">
+                Modifier
+              </button>
             </label>
             <div>Prix actuel : {{ publicationToModify.price }}</div>
             <p v-if="newPrice">Nouveau Prix :</p>
@@ -97,16 +117,17 @@
             />
           </div>
 
-          <div v-if="this.newPublicationType === 'promotion'">
+          <div v-if="this.newPublicationType === 'promotion'" class="category">
             <label for="newOldPrice">
               <button
                 v-if="newOldPrice"
                 type="button"
+                class="dont-modify"
                 @click="clearNewOldPrice"
               >
                 Ne plus modifier
               </button>
-              <button v-else type="button" @click="editOldPrice">
+              <button v-else type="button" class="modify" @click="editOldPrice">
                 Modifier
               </button>
             </label>
@@ -129,23 +150,31 @@
             />
           </div>
 
-          <div>
-            <label for="newDescription">
+          <div class="category">
+            <label for="new-description">
               <button
                 v-if="newDescription"
                 type="button"
+                class="dont-modify"
                 @click="clearNewDescription"
               >
                 Ne plus modifier
               </button>
-              <button v-else type="button" @click="editDescription">
+              <button
+                v-else
+                type="button"
+                class="modify"
+                @click="editDescription"
+              >
                 Modifier
               </button>
             </label>
-            <div>Description : {{ publicationToModify.description }}</div>
+            <div id="description">
+              Description : {{ publicationToModify.description }}
+            </div>
             <p v-if="newDescription">Nouvelle Description :</p>
             <textarea
-              id="newDescription"
+              id="new-description"
               v-if="newDescription"
               v-model="newDescription"
               size="10"
@@ -348,38 +377,23 @@ export default {
     deletePublication() {
       NProgress.start()
       this.connectionTest()
-      this.deleteImagesFromFbStorage().then(() => {
-        debugger
-        fb.publishedNewsCollection
-          .doc(this.publicationToModify.id)
-          .delete()
-          .then(() => {
-            NProgress.done()
-            const notification = {
-              type: 'success',
-              message: `La publication a été effacée avec succès !`
-            }
-            this.$store.dispatch('notification/add', notification)
-          })
-          .then(() => {
-            this.clearData()
-          })
-          .catch(error => {
-            this.publicationError(error)
-          })
-      })
-    },
-    deleteImagesFromFbStorage() {
-      const deletedImages = fb.publishedNewsCollection.doc(
-        this.publicationToModify.id
-      )
-
-      console.log(deletedImages)
-      debugger
-      const bucket = fb.storage.ref()
-      return deletedImages.map(imagePath => {
-        return bucket.file(imagePath).delete()
-      })
+      fb.publishedNewsCollection
+        .doc(this.publicationToModify.id)
+        .delete()
+        .then(() => {
+          NProgress.done()
+          const notification = {
+            type: 'success',
+            message: `La publication a été effacée avec succès !`
+          }
+          this.$store.dispatch('notification/add', notification)
+        })
+        .then(() => {
+          this.clearData()
+        })
+        .catch(error => {
+          this.publicationError(error)
+        })
     },
     beforeListEnter(el) {
       this.$emit('before-list-enter', el)
@@ -400,22 +414,115 @@ export default {
 <style scoped>
 p {
   padding-left: 1vw;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-right: 1vw;
+}
+
+input {
+  height: 4vw;
+  background-color: green;
+}
+
+button {
+  padding: 2vw 3vw;
+  margin: 1vw;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.dont-modify {
+  background-color: lightblue;
+  flex-shrink: 1;
+}
+
+.modify {
+  background-color: green;
+  flex-shrink: 1;
 }
 
 .news {
-  background-color: #283373;
+  background-color: #283373 !important;
   color: white;
   font-weight: bold;
   font-size: 14px;
 }
 
 .promotion {
-  background-color: #45d37f;
+  background-color: #45d37f !important;
   color: black;
   font-weight: bold;
   font-size: 14px;
 }
 
+.category {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2vw;
+}
+
+#newTitle {
+  width: 50%;
+}
+
+#new-description {
+  width: 90%;
+  height: 4vw;
+  background-color: green;
+}
+
+#newPublicationType {
+  height: 4vw;
+}
+
 #publication-updater-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media (max-width: 500px) {
+  #newTitle {
+    width: 40vw;
+  }
+
+  #new-description {
+    width: 30vw;
+    height: 20vw;
+    flex-grow: 1;
+    flex-shrink: 0;
+  }
+
+  #newPublicationType {
+    height: 4vw;
+  }
+}
+
+@media (min-width: 500px) and (max-width: 900px) {
+  button {
+    padding: 1vw 1.5vw;
+  }
+
+  #description {
+    flex-shrink: 1;
+    flex-grow: 0;
+  }
+  #newTitle {
+    width: 100%;
+  }
+
+  #new-description {
+    width: 20vw;
+    height: 10vw;
+    flex-grow: 1;
+    flex-shrink: 0;
+  }
+
+  #newPublicationType {
+    height: 4vw;
+  }
 }
 </style>

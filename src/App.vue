@@ -139,6 +139,11 @@ h2 {
 .submit-button {
   color: red;
   font-weight: bold;
+  margin: 1vw 2vw !important;
+}
+
+.submit-button:hover {
+  background-color: grey;
 }
 
 .disabledButton {
@@ -210,7 +215,7 @@ h2 {
   font-weight: bold;
   opacity: 0.6;
   letter-spacing: 1.5;
-  margin: 0 2vw !important;
+  margin: 0.5vw 2vw !important;
 }
 
 .btn-mine:hover {
@@ -254,6 +259,29 @@ h2 {
 }
 .col-12 {
   width: 100%;
+}
+
+@media (max-width: 500px) {
+  p {
+    font-size: 4vw;
+  }
+
+  h1 {
+    font-size: 4vw;
+  }
+
+  h2 {
+    font-size: 3vw;
+  }
+  .col-3 {
+    width: 50%;
+  }
+
+  .title {
+    margin: 0;
+    padding-top: 7vw;
+    font-size: 6vw;
+  }
 }
 
 /* ------------------------GRID----------------------------------------- */

@@ -8,7 +8,28 @@
 
       <p>{{ publishedNewOrPromotion.description }}</p>
       <p>Réference article : {{ publishedNewOrPromotion.ref }}</p>
-      <p class="price">PRIX : {{ publishedNewOrPromotion.price }}</p>
+      <p
+        v-show="publishedNewOrPromotion.publicationType === 'nouveauté'"
+        class="price"
+      >
+        PRIX : {{ publishedNewOrPromotion.price }}
+      </p>
+      <p
+        v-show="
+          publishedNewOrPromotion.publicationType === 'promotion' &&
+            publishedNewOrPromotion.oldPrice
+        "
+        class="price"
+      >
+        PRIX :
+        <span class="oldPrice">{{ publishedNewOrPromotion.oldPrice }}</span>
+      </p>
+      <p
+        v-show="publishedNewOrPromotion.publicationType === 'promotion'"
+        class="price"
+      >
+        PRIX SOLDE : {{ publishedNewOrPromotion.price }}
+      </p>
       <button class="book-button" @click="toggleBookingView">
         RESERVER MAINTENANT
       </button>
@@ -18,8 +39,8 @@
     <p v-show="showBooking" class="booking">
       CET ARTICLE VOUS PLAIT ? RESERVEZ-LE VITE EN APPELANT JULIE AU
       06.43.85.97.22. <br />
-      En cas de non-réponse, envoyez vos coordonnées ainsi que la référence de
-      l'article par SMS
+      En cas de non-réponse, envoyez lui vos coordonnées ainsi que la référence
+      de l'article par SMS
     </p>
     <div class="mosaic">
       <img
@@ -87,6 +108,10 @@ export default {
   letter-spacing: 0.2vw;
 }
 
+.oldPrice {
+  text-decoration: line-through red wavy;
+}
+
 .book-button {
   height: 3vw;
   width: 15vw;
@@ -105,5 +130,63 @@ label img {
   width: 5vw;
   cursor: pointer;
   margin-left: 1vw;
+}
+
+@media (max-width: 500px) {
+  h1 {
+    font-size: 8vw;
+  }
+
+  p {
+    font-size: 5vw;
+  }
+
+  img {
+    width: 200% !important;
+  }
+
+  .book-button {
+    height: 15vw;
+    width: 40vw;
+    margin-bottom: 2vw;
+    border-radius: 10%;
+    background: lightgreen;
+    cursor: pointer;
+    font-size: 4vw;
+    font-weight: bold;
+  }
+
+  .booking {
+    line-height: 4.5vw;
+  }
+}
+
+@media (min-width: 500px) and (max-width: 900px) {
+  h1 {
+    font-size: 7vw;
+  }
+
+  p {
+    font-size: 3vw;
+  }
+
+  img {
+    width: 150% !important;
+  }
+
+  .book-button {
+    height: 10vw;
+    width: 30vw;
+    margin-bottom: 2vw;
+    border-radius: 10%;
+    background: lightgreen;
+    cursor: pointer;
+    font-size: 3vw;
+    font-weight: bold;
+  }
+
+  .booking {
+    line-height: 4.5vw;
+  }
 }
 </style>

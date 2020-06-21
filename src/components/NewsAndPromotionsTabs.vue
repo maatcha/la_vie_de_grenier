@@ -133,12 +133,12 @@ h1 {
 
 .tabButton {
   font-family: 'Courgette', cursive, sans-serif;
+  padding: 2vw;
   font-size: 2vw;
   font-weight: bolder;
   background: rgba(54, 63, 72, 1);
   color: rgba(226, 231, 235, 1);
   width: 50%;
-  height: 4vw;
   border: 1px;
   cursor: pointer;
 }
@@ -149,5 +149,16 @@ h1 {
   opacity: 0.4;
   background: rgba(226, 231, 235, 1);
   cursor: none;
+}
+
+@media (max-width: 500px) {
+  h1 {
+    font-size: 6vw;
+  }
+
+  .tabButton {
+    font-size: 5vw;
+    padding: 1vw;
+  }
 }
 </style>

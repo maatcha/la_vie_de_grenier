@@ -138,6 +138,10 @@ const validateEmail = email => {
 </script>
 
 <style scoped>
+label {
+  margin-right: 1vw;
+}
+
 .contact-form {
   font-size: 1.5vw;
   text-align: end;
@@ -147,5 +151,29 @@ const validateEmail = email => {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+@media (max-width: 500px) {
+  .btn-twitter {
+    padding: 2vw 3vw;
+    width: 100%;
+  }
+
+  #phoneNumber {
+    width: 68%;
+  }
+
+  #name {
+    width: 110%;
+  }
+
+  #email {
+    width: 75%;
+  }
+
+  label {
+    font-size: 2vw;
+    margin-right: 1vw;
+  }
 }
 </style>
