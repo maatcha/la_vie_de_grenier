@@ -12,7 +12,7 @@
         v-show="publishedNewOrPromotion.publicationType === 'nouveauté'"
         class="price"
       >
-        PRIX : {{ publishedNewOrPromotion.price }}
+        PRIX : {{ publishedNewOrPromotion.price }} €
       </p>
       <p
         v-show="
@@ -22,13 +22,13 @@
         class="price"
       >
         PRIX :
-        <span class="oldPrice">{{ publishedNewOrPromotion.oldPrice }}</span>
+        <span class="oldPrice">{{ publishedNewOrPromotion.oldPrice }} €</span>
       </p>
       <p
         v-show="publishedNewOrPromotion.publicationType === 'promotion'"
         class="price"
       >
-        PRIX SOLDE : {{ publishedNewOrPromotion.price }}
+        PRIX SOLDE : {{ publishedNewOrPromotion.price }} €
       </p>
       <button class="book-button" @click="toggleBookingView">
         RESERVER MAINTENANT

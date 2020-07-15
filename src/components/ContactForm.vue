@@ -1,5 +1,6 @@
 <template>
   <div>
+    <NotificationContainer />
     <form class="contact-form" @submit.prevent>
       <p v-if="validateAdminEmail(email)">
         <input name="username" style="display: none;" />
@@ -50,6 +51,7 @@
 import * as fb from '@/firebaseConfig.js'
 import NProgress from 'nprogress'
 import store from '@/store/index.js'
+import NotificationContainer from '@/components/NotificationContainer.vue'
 export default {
   data() {
     return {
@@ -58,6 +60,9 @@ export default {
       email: null,
       password: null
     }
+  },
+  components: {
+    NotificationContainer
   },
   methods: {
     saveCustomerInfos() {

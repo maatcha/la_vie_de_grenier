@@ -148,7 +148,7 @@ h1 {
   color: currentColor;
   opacity: 0.4;
   background: rgba(226, 231, 235, 1);
-  cursor: none;
+  cursor: auto;
 }
 
 @media (max-width: 500px) {
